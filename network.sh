@@ -13,3 +13,5 @@ ifdata -pb eth0 # Broadcast of interface
 ifdata -p eth0 # Prints details of the interface
 ifdata -si eth0 # Stats of interface for incoming requests
 ifdata -so eth0 # Stats of interface for outgoing requests
+
+lsof -i 4 -n -P # List of all open sockets for ipv4

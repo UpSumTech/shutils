@@ -17,3 +17,9 @@ combine foo or bar | pee 'sort -n | uniq >sorted' 'sort -nr | uniq >reverse_sort
 # Sort the file numerically and add timestamps to the beginning of each line with sub-second resolution
 cat sorted | ts -s "%Y/%m/%d:%H:%M:%.S" | sed -e 's#1970/01#2017/08#g;' | sponge sorted
 sort -nr reverse_sorted | ts -s "%Y/%m/%d:%H:%M:%.S" | sed -e 's#1970/01#2017/08#g;' | sponge reverse_sorted
+
+# Compress and decompress
+tar -zcvf sorted.tar.gz sorted
+tar -zcvf reverse_sorted.tar.gz reverse_sorted
+zip -r sorted.zip sorted
+zip -r reverse_sorted.zip reverse_sorted
