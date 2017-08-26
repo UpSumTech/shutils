@@ -5,6 +5,8 @@ find . -type d -ls # List all directories
 # find and replace some text in a file in one line
 find . -type f -name "*.json" -print | xargs grep -i 'string' | awk '{print $1}' | sed -e 's#:##g' | xargs -n 1 -I % sed -i.bak -e 's#"string"#"newstring"#g' % && find . -type f -name "*.bak" -exec rm {} \;
 find . -type f -perm 600 | ifne echo "executable files found" # find files with certain permission settings
+
+cat /proc/cpuinfo | grep 'core id' # Find the actual number of cores on the machine. Single core might have a core id of 0.
 # find files with 600 permission settings across ssh dirs of 3 users in parallel
 parallel -j3 -- "find /home/developer/.ssh -type f -perm 600" "find /root/.ssh -type f -perm 600" "find /home/ubuntu/.ssh -type f -perm 600"
 egrep '(cal|date)' utils.sh # Find the strings in the file
