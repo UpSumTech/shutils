@@ -1,5 +1,7 @@
 #! /usr/bin/env bash
 
+curl icanhazip.com # find external ip of machine easily
+
 arp -a # ARP of router
 arping -I eth0 10.23.11.101 # Ping the device at the ethernet layer
 ping google.ca # Check if request is even going out
