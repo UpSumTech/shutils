@@ -25,3 +25,6 @@ tar -zcvf sorted.tar.gz sorted
 tar -zcvf reverse_sorted.tar.gz reverse_sorted
 zip -r sorted.zip sorted
 zip -r reverse_sorted.zip reverse_sorted
+
+# Join all bin folders and create a PATH like var
+find ~ -name '*bin*' -type d | paste -d : -s -
