@@ -36,3 +36,8 @@ ps auww | grep to[p] | awk '{print $2}' | xargs -n 1 -I % lsof -p
 
 lsof -i 4 -a -p PID # List open sockets for PID
 lsof -p PID # List all open files for PID
+
+# detach top running with absolute values and delayed by 5 seconds from login session and collect the logs
+nohup top -e -s 5 >> top.log 2>&1 & # nohup doesnt background the process by default
+echo $! > top.pid # Capture the pid of the top command to be able to kill later
+kill -9 $(cat top.pid) && rm top.pid # Kill nohup process after done

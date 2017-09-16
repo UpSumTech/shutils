@@ -1,5 +1,6 @@
 #! /usr/bin/env bash
 
+telnet github.com 22 # try to see if port is accepting connections on remote machine
 curl icanhazip.com # find external ip of machine easily
 
 arp -a # ARP of router
