@@ -7,3 +7,7 @@ dpkg -l # List all packages
 lscpu # List cpu info
 lspci -mm # Lsit all PCI buses in the system in machine readable format
 
+# Scenario : Running lsof shows deleted uid 999 hanging onto processes
+# find user with UID 999
+awk -v uid=999 -F ":" '$3==uid {print $1}' /etc/passwd
+ps -U 999 # find processes owned by user 999
