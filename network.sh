@@ -34,3 +34,8 @@ iptables -L -n -v # List all firewall settings
 iptables -Z # Clear out the counter for packets and bytes in the INPUT, OUTPUT and FORWARD chains
 iptables -L -t nat # Check the NAT status
 cat /proc/sys/net/ipv4/ip_forward # Check if IP forwarding is on. Useful for NAT instances
+
+nmap -T4 -F 198.10.100.0/24 # Scanning a large network for open ports
+nmap -T4 -Pn -F 198.10.100.21 # Checks with ping if host is up. Host could be behind a firewall
+nmap -T4 -Pn -F 198.10.100.21 --traceroute # trace the path to host along with scanning open ports
+nmap -Pn -p 22 198.10.100.21 # Scan port 22 for the given host
