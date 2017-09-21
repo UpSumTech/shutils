@@ -7,6 +7,9 @@ dpkg -l # List all packages
 lscpu # List cpu info
 lspci -mm # Lsit all PCI buses in the system in machine readable format
 
+# Scan for binaries that have suid bit set for user and group
+find / -xdev -type f -perm /u+s,g+s -print # Useful for finding binaries you dont recognize
+
 # Scenario : Running lsof shows deleted uid 999 hanging onto processes
 # find user with UID 999
 awk -v uid=999 -F ":" '$3==uid {print $1}' /etc/passwd
