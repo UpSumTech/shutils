@@ -13,6 +13,8 @@ ps --sort -rss -eo pid,pcpu,pmem,rss,vsize,size,cmd | head -n 10 # Track process
 ps --sort -pcpu -eo pid,pcpu,pmem,rss,vsize,size,cmd | head -n 10 # Track process by high cpu usage
 ps -A -o 'pid,ppid,stat,time,command' | awk '{if($2 == /Z/) print $0}' # Track zombie processes
 
+pstree -aclp <pid> # Get an uncompressed version of process tree. Useful for process managers like supervisor
+
 fuser -av /proc/meminfo # Find what process is using this file. Try this with the top command
 fuser -av 22/tcp # Find what processes are using this socket
 

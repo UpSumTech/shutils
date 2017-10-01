@@ -3,6 +3,11 @@
 telnet github.com 22 # try to see if port is accepting connections on remote machine
 curl icanhazip.com # find external ip of machine easily
 
+dig rainandrhyme.com # get DNS records for a domain
+dig @8.8.8.8 rainandrhyme.com # get DNS records using a google server
+dig @localhost rainandrhyme.com # get DNS records using the local DNS server you are running something like dnsmasq
+getent hosts rainandrhyme.com # check if you have a DNS entry in your hosts file
+
 arp -a # ARP of router
 arping -I eth0 10.23.11.101 # Ping the device at the ethernet layer
 ping google.ca # Check if request is even going out
