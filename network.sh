@@ -32,6 +32,8 @@ ifdata -si eth0 # Stats of interface for incoming requests
 ifdata -so eth0 # Stats of interface for outgoing requests
 
 lsof -i 4 -n -P # List of all open sockets for ipv4
+lsof -P -iTCP -sTCP:LISTEN # List all TCP listening sockets
+
 socklist # List of all open sockets
 sockstat -p 22 # Get socket info for port 22
 
