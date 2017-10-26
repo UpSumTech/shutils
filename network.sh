@@ -50,3 +50,6 @@ nmap -Pn -p 22 198.10.100.21 # Scan port 22 for the given host
 # ssh tunnel into a remote server to use a service on a blocked port running on that server
 ssh -f -L <high_localhost_port>:localhost:<servers_blocked_port> user@proxy_server -N
 nc -z localhost <high_localhost_port> # To verify that the tunnel is working
+
+# quickly reasoning about CIDRs
+ipcalc 172.16.1.0/24 -s 15 15 # gives you detailed info to partition a network with 2 subnets of size 15 each

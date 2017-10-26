@@ -46,3 +46,9 @@ lsof -P -iTCP -sTCP:LISTEN | grep <open file descriptor of socket> # This tells 
 nohup top -e -s 5 >> top.log 2>&1 & # nohup doesnt background the process by default
 echo $! > top.pid # Capture the pid of the top command to be able to kill later
 kill -9 $(cat top.pid) && rm top.pid # Kill nohup process after done
+
+# Scenario : lets say you added a temp user in a m/c to test stuff out and then want to cleanly remove it
+useradd -m -G temp_user -g temp_user -a sudo --s /bin/bash -c temp_user,,,, temp_user
+deluser temp_user --remove-all-files
+ps U temp_user # Kill all processes belonging to a deleted user
+slay -clean temp_user # Kills all remaining processes from the above step

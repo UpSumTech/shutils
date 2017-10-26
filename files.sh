@@ -28,3 +28,7 @@ zip -r reverse_sorted.zip reverse_sorted
 
 # Join all bin folders and create a PATH like var
 find ~ -name '*bin*' -type d | paste -d : -s -
+
+# Change the ownership of all files belonging to a specfic user or group
+find / -uid 1003 -exec chown -v 1010:1010 {} \;
+find / -gid 1010 -exec chown -v 1001:1001 {} \;
