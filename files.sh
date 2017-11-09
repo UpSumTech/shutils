@@ -18,7 +18,11 @@ for i in {1..10}; do echo `expr 20 - $i` >> bar; done
 combine foo or bar | pee 'sort -n | uniq >sorted' 'sort -nr | uniq >reverse_sorted'
 # Sort the file numerically and add timestamps to the beginning of each line with sub-second resolution
 cat sorted | ts -s "%Y/%m/%d:%H:%M:%.S" | sed -e 's#1970/01#2017/08#g;' | sponge sorted
-sort -nr reverse_sorted | ts -s "%Y/%m/%d:%H:%M:%.S" | sed -e 's#1970/01#2017/08#g;' | sponge reverse_sorted
+sort -nr reverse_sorted | ts -s "%Y/%m/%d:%H:%M:%.S" | sed -e 's#1971/01#2017/08#g;' | sponge reverse_sorted
+# Easily add line numbers and then add a tiume stamp between garbage text and the line numbers to a file
+nl -bt -s " $(date +"%Y-%m-%d %H:%M:%S") " foo | sponge foo
+# Try and generate something like a log file sythetically by adding a known prefix to the begining of a line
+cat foo | awk -v prefix="[INFO] - 198.21.11.30" '{print prefix $0}' | sponge foo
 
 # Compress and decompress
 tar -zcvf sorted.tar.gz sorted
