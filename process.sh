@@ -38,6 +38,7 @@ ps auww | grep to[p] | awk '{print $2}' | xargs -n 1 -I % lsof -p
 
 lsof -i 4 -a -p PID # List open sockets for PID
 lsof -p PID # List all open files for PID
+lsof -p PID | grep 'cwd' # To find what the current working dir of the command is
 find /proc/<PID>/fd -type l | xargs ls -lah # List the open file descriptors of a process
 lsof -R | grep <open file descriptor of PIPE> | awk '{print system("ps "$2)}' # This tells you which process is listening to the other end of the pipe
 lsof -P -iTCP -sTCP:LISTEN | grep <open file descriptor of socket> # This tells you what socket the process is listening to
