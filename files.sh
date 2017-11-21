@@ -24,6 +24,8 @@ nl -bt -s " $(date +"%Y-%m-%d %H:%M:%S") " foo | sponge foo
 # Try and generate something like a log file sythetically by adding a known prefix to the begining of a line
 cat foo | awk -v prefix="[INFO] - 198.21.11.30" '{print prefix $0}' | sponge foo
 
+shuf -i 1-100000 -n 500 > rand_numbers # Generates random numbers in the given range
+
 # Compress and decompress
 tar -zcvf sorted.tar.gz sorted
 tar -zcvf reverse_sorted.tar.gz reverse_sorted
