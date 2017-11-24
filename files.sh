@@ -24,6 +24,11 @@ nl -bt -s " $(date +"%Y-%m-%d %H:%M:%S") " foo | sponge foo
 # Try and generate something like a log file sythetically by adding a known prefix to the begining of a line
 cat foo | awk -v prefix="[INFO] - 198.21.11.30" '{print prefix $0}' | sponge foo
 
+# Applying a diff and patch for distributing changes quickly
+diff -sub file1 file2 # shows diff between files file1 and file2 ignoring whitespaces
+diff -Naur file1 file2 >v1 # generates a patch compatible diff between files file1 and file2 and puts it in patch v1
+cat v1 | patch -p1 # apply patch v1 to file of choice interactively
+
 shuf -i 1-100000 -n 500 > rand_numbers # Generates random numbers in the given range
 
 # Compress and decompress
