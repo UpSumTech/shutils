@@ -30,6 +30,8 @@ diff -Naur file1 file2 >v1 # generates a patch compatible diff between files fil
 cat v1 | patch -p1 # apply patch v1 to file of choice interactively
 
 shuf -i 1-100000 -n 500 > rand_numbers # Generates random numbers in the given range
+cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1 # Generates random alphanumeric string that you can use for secrets or keys
+ls /usr/bin | fold - -s -w 40 # Get the files in dir as a list
 
 # Compress and decompress
 tar -zcvf sorted.tar.gz sorted
