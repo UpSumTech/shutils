@@ -1,5 +1,6 @@
 #! /usr/bin/env bash
 
+runlevel # Get the current run level of the system
 uptime # How long has this machine been running
 who # who is currently logged into the system
 w # List processes belonging to logged in users
