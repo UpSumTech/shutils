@@ -30,3 +30,6 @@ find / -xdev -type f -perm /u+s,g+s -print # Useful for finding binaries you don
 # find user with UID 999
 awk -v uid=999 -F ":" '$3==uid {print $1}' /etc/passwd
 ps -U 999 # find processes owned by user 999
+
+ls -i # List inode or physical addresses of files. Sometimes useful to find files with weird chars in names
+zdump PST EST IST # list current time in different time zones
