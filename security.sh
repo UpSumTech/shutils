@@ -9,11 +9,19 @@ last reboot # List last time the system restarted
 last root # List last time the system was accessed as root
 
 wall 'Taking down system for maintenance' # Send a warning to other users to wrap up their work before maintenance window begins
+
+uname -m # System architecture
+arch # System architecture
 lsb_release -a # List distro info
 lsmod # Lsit all the kernel modules
-dpkg -l # List all packages
+dpkg -l # List all packages in debian systems
 lscpu # List cpu info
-lspci -mm # Lsit all PCI buses in the system in machine readable format
+lspci -mm # List all PCI buses in the system in machine readable format
+
+rpm -qa # List of all rpm packages on a RHEL system
+rpm -qf /bin/echo # List the package the file originated from
+
+whatis nc # To get a quick summary of what this binary might be doing. If you suspect something you have never seen before.
 
 # Scan for binaries that have suid bit set for user and group
 find / -xdev -type f -perm /u+s,g+s -print # Useful for finding binaries you dont recognize
