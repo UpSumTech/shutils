@@ -10,6 +10,7 @@ last root # List last time the system was accessed as root
 
 wall 'Taking down system for maintenance' # Send a warning to other users to wrap up their work before maintenance window begins
 
+cat /etc/*-release # To know what flavour of linux you are running
 uname -m # System architecture
 arch # System architecture
 lsb_release -a # List distro info

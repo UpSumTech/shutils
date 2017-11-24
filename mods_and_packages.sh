@@ -1,7 +1,5 @@
 #! /usr/bin/env bash
 
-cat /etc/*-release # To know what flavour of linux you are running
-
 sudo apt-get install moreutils # Just install moreutils and thank me later
 sudo apt-get install iputils-arping # package to send ARP requests at the ethernet level
 sudo apt-get install tcptraceroute # useful to trace route with tcp instead of icmp
