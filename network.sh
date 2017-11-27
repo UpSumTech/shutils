@@ -53,3 +53,6 @@ nc -z localhost <high_localhost_port> # To verify that the tunnel is working
 
 # quickly reasoning about CIDRs
 ipcalc 172.16.1.0/24 -s 15 15 # gives you detailed info to partition a network with 2 subnets of size 15 each
+
+# quick proxy server listening on port 9999 and forwarding all requests to sectools.org
+mkfifo response_pipe && nc -l 9999  0<response_pipe | nc sectools.org 80 1>response_pipe
