@@ -6,3 +6,4 @@ sudo apt-get install tcptraceroute # useful to trace route with tcp instead of i
 sudo apt-get install procinfo # useful to read proc files for socket information
 sudo apt-get install sockstat # useful to read socket information
 sudo apt-get install nmap # useful for scanning and trouble shooting large networks
+sudo apt-get install multitail # useful for tailing multiple logs in one terminal window

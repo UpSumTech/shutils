@@ -35,3 +35,6 @@ ps -U 999 # find processes owned by user 999
 
 ls -i # List inode or physical addresses of files. Sometimes useful to find files with weird chars in names
 zdump PST EST IST # list current time in different time zones
+
+# To look at aggregated logs from a bunch of servers
+multitail --merge-all -cS apache -cS log4j -e 'error' -l 'ssh -t user@server1 "tail -f /var/log/nginx.log"' -cS apache -cS log4j -e 'error' -l 'ssh -t user@server2 "tail -f /var/log/nginx.log"' --no-mergeall
