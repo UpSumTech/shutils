@@ -50,3 +50,5 @@ kill -9 $(cat top.pid) && rm top.pid # Kill nohup process after done
 
 ps U user # Kill all processes belonging to a user
 slay -clean user # Kills all remaining processes from the above step
+
+cat /etc/services | grep -i tmux # To see the port and protocol that tmux is using
