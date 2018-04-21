@@ -17,6 +17,7 @@ arch # System architecture
 lsb_release -a # List distro info
 lsmod # Lsit all the kernel modules
 dpkg -l # List all packages in debian systems
+apt list --installed | grep ssl # List installed packages in ubuntu
 lscpu # List cpu info
 lspci -mm # List all PCI buses in the system in machine readable format
 
