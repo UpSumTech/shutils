@@ -51,6 +51,14 @@ nmap -Pn -p 22 198.10.100.21 # Scan port 22 for the given host
 ssh -f -L <high_localhost_port>:localhost:<servers_blocked_port> user@proxy_server -N
 nc -z localhost <high_localhost_port> # To verify that the tunnel is working
 
+# To send and receive files using nc
+tar cf - * | netcat <ip_of_receiving_host> <port> # Tar and send files to a specific port on another host from a machine
+netcat -l -p <port> | tar x # Untar by listening to a port on the target machine
+
+# To send and receive LVM files over the network
+dd if=/dev/mapper/foo bs=4M | netcat <ip_of_receiving_host> <port> # Send block storage files to a specific port on another host from a machine
+nc -l <port> | dd of=/dev/mapper/foo bs=4M # Receive block storage file on the target machine
+
 # quickly reasoning about CIDRs
 ipcalc 172.16.1.0/24 -s 15 15 # gives you detailed info to partition a network with 2 subnets of size 15 each
 echo "ibase=A;obase=2;248" | bc # quickly does conversions for you to understand network and host bits faster
