@@ -17,7 +17,7 @@ tcptraceroute google.ca # Trace using tcp instead of icmp
 ifconfig -a # Display all interfaces
 ifconfig en0 # Display selected interface
 
-netstat -r -f inet # Route table for inet address family
+netstat -r inet # Route table for DARPA internet address family
 netstat -tup # List currently active connection to the system
 netstat -tupl # List listening ports
 netstat -anp --udp --tcp | grep LISTEN # List listening ports for tcp and udp connections
@@ -25,7 +25,7 @@ netstat -anp --udp --tcp | grep LISTEN # List listening ports for tcp and udp co
 ifdata -e eth0; echo $? # Checks existence of interface and prints the exit status
 ifdata -pa eth0 # Network address of interface
 ifdata -pn eth0 # Netmask of interface
-ifdata -pN eth0 # Network address of interface
+ifdata -pN eth0 # Network address of gateway
 ifdata -pb eth0 # Broadcast of interface
 ifdata -p eth0 # Prints details of the interface
 ifdata -si eth0 # Stats of interface for incoming requests
@@ -76,6 +76,9 @@ fuser -k -n tcp 8080 # To free up the 8080 tcp port by killing the process runni
 ufw allow 22 # Allow ssh port if firewall is there
 ufw deny 22 # Deny ssh port if firewall is there
 
+
+######### iproute commands #########
+
 # Firewalling with iptables
 apt-get install iptables-persistent && netfilter-persistent save # For persisting iptable changes across reboots on ubuntu
 service iptables save # For persisting iptables on rhel
@@ -84,6 +87,7 @@ iptables -S # List all active iptable rules
 iptables -S FORWARD # List all forward rules
 iptables -L # List rules by chain
 iptables -L FORWARD # List rules for the FORWARD chain
+iptables -L -t nat # List the routing policies for NAT table
 
 iptables -Z # Clear the counters for all the chains
 iptables -Z INPUT # Clear the counters for the INPUT chain
@@ -130,3 +134,37 @@ iptables -A OUTPUT -p tcp --sport 873 -m conntrack --ctstate ESTABLISHED -j ACCE
 # Combining the ssh and rsync rules into one
 iptables -A INPUT -p tcp -s 20.30.40.15/24 -m multiport --dport 22,873 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT # Allow incoming rsync traffic from a specific CIDR
 iptables -A OUTPUT -p tcp -m multiport --sport 22,873 -m conntrack --ctstate ESTABLISHED -j ACCEPT # Allow outgoing traffic for rsync
+
+######### iproute2 commands #########
+
+ip addr show docker0 # Show the address of docker0 interface
+ip addr show up # Show up and running interfaces
+
+ip addr add 192.20.10.1/24 dev eth0 # Add a specific address to an interface
+ip addr delete 192.20.10.1/24 dev eth0 # Remove an address from an interface
+ip addr flush dev eth0 # Flush all addresses from an interface
+
+ip link show dev eth0 # Shows the link (interface) for eth0
+ip link set dev eth0 up # Turns up an interface
+ip link set dev eth0 down # Turns down an interface
+ip link set dev eth0 mtu 1200 # Control the mtu of an interface if your ethernet supports it
+
+ip route show # Display the routes on a machine
+ip route show to match 192.168.0.1/24 # Display routes matching subnet and all larger subnets
+
+ip route add 0.0.0.0/0 via 192.0.2.1 # To add a default route
+ip route add 192.0.2.128/24 via 192.0.2.1 # Add a new route via a gateway
+ip route change 192.168.2.0/24 via 10.0.0.1 # To change a route to use a different gateway
+
+ip route add unreachable 192.0.2.128/24 # Returns "unreachable" for ICMP requests to the client
+
+ip netns list # List the network namespaces
+ip netns exec red /bin/bash # Start a bash shell in the red network namespace
+ip netns pids red # List all processes in the red network namespace
+ip netns identify 7000 # Identify the network namespace of the PID
+
+ip monitor # Monitor network events like link or addr changes or routing table changes etc
+ip monitor route # Monitor route table changes
+
+ip netconf show # View sysctl config on the machine
+ip netconf show dev docker0 # View sysctl config on the machine for a specific device

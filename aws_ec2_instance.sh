@@ -1,4 +1,7 @@
-#! /usr/bin/env bash
+#!/usr/bin/env bash
+
+# Try to see if port is accepting connections on remote machine
+telnet 54-190-204-211.us-west-2.compute.amazonaws.com 22
 
 # To debug init logs
 cat /var/log/cloud-init-output.log # To see the logs of the bootstrap process on the NAT box
