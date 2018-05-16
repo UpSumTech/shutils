@@ -155,8 +155,10 @@ ip route show to match 192.168.0.1/24 # Display routes matching subnet and all l
 ip route add 0.0.0.0/0 via 192.0.2.1 # To add a default route
 ip route add 192.0.2.128/24 via 192.0.2.1 # Add a new route via a gateway
 ip route change 192.168.2.0/24 via 10.0.0.1 # To change a route to use a different gateway
+ip route show cached # Show the cached routes
 
 ip route add unreachable 192.0.2.128/24 # Returns "unreachable" for ICMP requests to the client
+ip route add prohibit 192.0.2.128/24 # Returns "prohibited" for ICMP requests to the client
 
 ip netns list # List the network namespaces
 ip netns exec red /bin/bash # Start a bash shell in the red network namespace
