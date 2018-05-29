@@ -36,6 +36,7 @@ lsof -P -iTCP -sTCP:LISTEN # List all TCP listening sockets
 
 socklist # List of all open sockets
 sockstat -p 22 # Get socket info for port 22
+sockstat -cl -U 0 # Get all the connected sockets root is listening to
 
 iptables -L -n -v # List all firewall settings
 iptables -Z # Clear out the counter for packets and bytes in the INPUT, OUTPUT and FORWARD chains
