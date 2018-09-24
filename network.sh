@@ -49,6 +49,9 @@ nmap -T4 -Pn -F 198.10.100.21 # Checks with ping if host is up. Host could be be
 nmap -T4 -Pn -F 198.10.100.21 --traceroute # trace the path to host along with scanning open ports
 nmap -Pn -p 22 198.10.100.21 # Scan port 22 for the given host
 
+# Exec ssh commands on a machine and get it's output
+ssh -o ExitOnForwardFailure=yes foo.example.com -t "ps -elf"
+
 # ssh tunnel into a remote server to use a service on a blocked port running on that server
 ssh -f -L <high_localhost_port>:localhost:<servers_blocked_port> user@proxy_server -N
 nc -z localhost <high_localhost_port> # To verify that the tunnel is working
