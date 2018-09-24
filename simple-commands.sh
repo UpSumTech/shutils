@@ -63,3 +63,6 @@ cat ~/code/file.txt | grep 'foo' | head -n 5 | tail -n 2
 
 # Get a file from internet, find text whatever and get the last 10 lines from that search into newtail.txt
 curl http://example.com/file.html | grep 'whatever' | tail -n 10 > newtail.txt
+
+# zip up the dir to compressed.zip
+zip -r compressed.zip /path/to/dir
