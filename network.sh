@@ -52,6 +52,9 @@ nmap -Pn -p 22 198.10.100.21 # Scan port 22 for the given host
 # Exec ssh commands on a machine and get it's output
 ssh -o ExitOnForwardFailure=yes foo.example.com -t "ps -elf"
 
+# ssh through a jump host with a connection timeout of 10s
+ssh -A -J jump.example.com -i ~/.ssh/priv_key_for_jumphost.pem ubuntu@dev.example.com -o ConnectTimeout=10
+
 # ssh tunnel into a remote server to use a service on a blocked port running on that server
 ssh -f -L <high_localhost_port>:localhost:<servers_blocked_port> user@proxy_server -N
 nc -z localhost <high_localhost_port> # To verify that the tunnel is working

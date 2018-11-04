@@ -13,3 +13,10 @@ cat /var/lib/cloud/data/result.json # To view the result of the init process
 curl http://169.254.169.254/latest/
 curl http://169.254.169.254/latest/dynamic/instance-identity/document # This gives the instance identity data
 curl http://169.254.169.254/latest/meta-data/ # This gives the meta-data of the instance
+
+# installing certbot to generate letencrypt certs on an ec2 machine that you can use for your domain
+add-apt-repository ppa:certbot/certbot # add the ppa to apt
+apt-get install -y -qq certbot python3-certbot-dns-route53 # install certbot and the certbot plugin to validate route53 domains
+
+# Generate the certs with certbot
+certbot certonly --dns-route53 --expand --noninteractive --agree-tos --email developer@example.com -d example.com

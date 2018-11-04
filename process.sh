@@ -43,6 +43,9 @@ find /proc/<PID>/fd -type l | xargs ls -lah # List the open file descriptors of 
 lsof -R | grep <open file descriptor of PIPE> | awk '{print system("ps "$2)}' # This tells you which process is listening to the other end of the pipe
 lsof -P -iTCP -sTCP:LISTEN | grep <open file descriptor of socket> # This tells you what socket the process is listening to
 
+cat /proc/<pid>/environ | strings # what env vars were set when the process started
+cat /proc/<pid>/cmdline | strings | xargs # regen the exact cmd that was used to run the process
+
 # detach top running with absolute values and delayed by 5 seconds from login session and collect the logs
 nohup top -e -s 5 >> top.log 2>&1 & # nohup doesnt background the process by default
 echo $! > top.pid # Capture the pid of the top command to be able to kill later

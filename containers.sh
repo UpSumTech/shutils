@@ -6,6 +6,7 @@ docker inspect <container_id> -f "{{.State.Pid}}" # Get the host pid of the runn
 
 # Get all the env vars inside the container process namespace
 cat /proc/<container_pid_on_host>/environ | sed -E 's#([A-Z_0-9]*)=([\s]*)#\n\1=\2#g'; echo
+cat /proc/<container_pid_on_host>/cmdline | strings | xargs # regen the exact cmd that was used to run the container
 
 # Get the inodes of the different namespaces the container is in
 ls -lah /proc/<container_pid_on_host>/ns
