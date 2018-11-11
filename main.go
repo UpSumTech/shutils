@@ -21,7 +21,7 @@ func main() {
 		Long:             rootLongDesc,
 		TraverseChildren: true,
 		Run: func(cmd *cobra.Command, args []string) {
-			fmt.Println("example usage")
+			fmt.Println("TODO: example usage to be changed afterwards")
 		},
 	}
 
