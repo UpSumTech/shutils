@@ -259,7 +259,7 @@ check_working_dir_status :
 	$(info [INFO] --- Checks the status of the working directory)
 	$(AT)git symbolic-ref --short --quiet HEAD \
 	&& git diff-index --quiet HEAD -- \
-	&& git status -uno | grep 'up-to-date' \
+	&& git status -uno | grep -E '(up-to-date|up\ to\ date)' \
 	&& ! git show-ref --tags | grep -v -F "$$(git ls-remote --tags $(GIT_REPO_URL) | grep -v '\^{}' | cut -f2)"
 
 # Checks if you have the WIP flag enabled then you are not on stable branches like master or develop
