@@ -96,7 +96,7 @@ ifeq ($(HOTFIX),1)
 	TAG := $(HOTFIX_REGEX)-$(BUILD_TIME)
 else
 	# If not a hotfix then valid values can be <patch|minor|major>
-	VERSION := $(PATCH)
+	VERSION := patch
 	TAG := $(shell /usr/bin/env bash $(ROOT_DIR)/bin/semver.sh $(VERSION) $(PREVIOUS_RELEASE_TAG))
 endif
 endif
@@ -293,6 +293,7 @@ endif
 # Check for git tag on remote
 # Check for docker tag on docker repo
 check_no_existing_tag_on_remote :
+	echo '$(VERSION)'
 	echo '$(TAG)'
 	$(info [INFO] --- Checks that the new tag does not exist on git remote or on remote docker repo)
 	$(AT)! git ls-remote --tags $(GIT_REPO_URL) | grep '$(TAG)'
@@ -300,6 +301,7 @@ check_no_existing_tag_on_remote :
 # Check for git tag locally
 # Check for docker tag locally
 check_no_existing_tag_locally :
+	echo '$(VERSION)'
 	echo '$(TAG)'
 	$(info [INFO] --- Checks that the new tag does not exist on git locally or on docker client locally)
 	$(AT)! git tag | grep '$(TAG)' \
@@ -317,6 +319,7 @@ checks_for_new_build : check_deps check_working_dir_status check_branch check_no
 # Check for docker tag locally
 # Check for docker tag on remote
 check_existing_docker_tag :
+	echo '$(VERSION)'
 	echo '$(TAG)'
 	$(info [INFO] --- Checks that the tag passed from the cli exists on docker client locally or on docker repo on remote)
 	$(AT)docker images | grep -i "$(BUILDER_IMAGE_NAME)" | grep "$(TAG)"
@@ -324,6 +327,7 @@ check_existing_docker_tag :
 # Check for git tag locally
 # Check for git tag on remote
 check_existing_git_tag :
+	echo '$(VERSION)'
 	echo '$(TAG)'
 	$(info [INFO] --- Checks that the tag passed from the cli exists on git locally or on git repo on remote)
 	$(AT)git ls-remote --tags $(GIT_REPO_URL) | grep '$(TAG)' \
