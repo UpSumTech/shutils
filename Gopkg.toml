@@ -1,0 +1,30 @@
+# Gopkg.toml
+
+[[ constraint ]]
+  branch = "master"
+  name = "github.com/spf13/cobra"
+
+# [[ constraint ]]
+  # branch = "master"
+  # name = "github.com/spf13/viper"
+
+# [[ constraint ]]
+  # branch = "master"
+  # name = "github.com/mitchellh/go-homedir"
+
+# [[ constraint ]]
+  # name = "gopkg.in/go-playground/validator.v9"
+  # branch = "v9"
+
+# [[ constraint ]]
+  # name = "golang.org/x/crypto"
+
+# [[ constraint ]]
+  # name = "gopkg.in/src-d/go-git.v4"
+
+# [[ constraint ]]
+  # name = "github.com/go-playground/jsonschema"
+
+[prune]
+  go-tests = true
+  unused-packages = true
