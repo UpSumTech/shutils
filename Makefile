@@ -8,7 +8,15 @@ SHELL := /usr/bin/env bash
 ##########################################################################################
 ## App level vars
 
--include Makefile.app.vars
+WIP_REGEX := wip
+SEMVER_REGEX := v[0-9]*\.[0-9]*\.[0-9]*
+HOTFIX_REGEX := hotfix
+PATCH := patch
+MAJOR := major
+MINOR := minor
+STABLE_BRANCHES := master
+NON_ROOT_UID=1001
+NON_ROOT_GID=1001
 
 ##########################################################################################
 ## Functions
@@ -96,7 +104,7 @@ ifeq ($(HOTFIX),1)
 	TAG := $(HOTFIX_REGEX)-$(BUILD_TIME)
 else
 	# If not a hotfix then valid values can be <patch|minor|major>
-	VERSION := patch
+	VERSION := $(PATCH)
 	TAG := $(shell /usr/bin/env bash $(ROOT_DIR)/bin/semver.sh $(VERSION) $(PREVIOUS_RELEASE_TAG))
 endif
 endif
