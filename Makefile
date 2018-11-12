@@ -148,8 +148,7 @@ ifeq ($(IS_TAG_FROM_CLI), 0)
 			--build-arg NON_ROOT_GID=$(NON_ROOT_GID) \
 			--build-arg NON_ROOT_USER=default \
 			-f Dockerfile \
-			-t $(BUILDER_IMAGE_NAME):$(TAG) \
-			"$(GIT_REPO_URL)#$(GIT_SHA)"
+			-t $(BUILDER_IMAGE_NAME):$(TAG) .
 	$(info [INFO] --- Create annotated semver tag marking commit sha as a release candidate)
 	$(AT)docker tag $(BUILDER_IMAGE_NAME):$(TAG) $(DOCKERHUB_USERNAME)/$(BUILDER_IMAGE_NAME):$(TAG)
 	$(AT)git tag $(TAG) -am "Version:$(TAG),User:$(USER),Time:$(BUILD_TIME)"
