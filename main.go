@@ -1,17 +1,14 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/spf13/cobra"
+	"github.com/sumanmukherjee03/shutils/cmd/kubecmds"
 )
 
 var (
 	rootShortDesc = "Shutils is a simple utilty to print use cases of various sysadmin CLI tools"
 	rootLongDesc  = `Shutils is a flexible tool built in golang.
 	It prints cheat sheets for various sysadmin CLI tools.`
-	cfgFile string
-	Dryrun  bool
 )
 
 func main() {
@@ -20,10 +17,8 @@ func main() {
 		Short:            rootShortDesc,
 		Long:             rootLongDesc,
 		TraverseChildren: true,
-		Run: func(cmd *cobra.Command, args []string) {
-			fmt.Println("TODO: example usage to be changed afterwards")
-		},
 	}
 
+	rootCmd.AddCommand(kubecmds.Init())
 	rootCmd.Execute()
 }
