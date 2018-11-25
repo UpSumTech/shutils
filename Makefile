@@ -50,7 +50,7 @@ BINTRAY_API_URL="https://api.bintray.com"
 ifdef DEPLOY_GITHUB_TOKEN
 	GIT_REPO_URL := https://$(DEPLOY_GITHUB_TOKEN)@github.com/$(GITHUB_USERNAME)/$(REPO_NAME).git
 else
-	$(error "ERROR : Please export DEPLOY_GITHUB_TOKEN to your shell")
+$(error "ERROR : Please export DEPLOY_GITHUB_TOKEN to your shell")
 endif
 
 USER := $(shell id -un)
