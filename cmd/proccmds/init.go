@@ -1,5 +1,28 @@
-#! /usr/bin/env bash
+package proccmds
 
+import (
+	"fmt"
+
+	"github.com/spf13/cobra"
+)
+
+var (
+	parseShortDesc = `Prints examples of commands for debugging processes`
+	parseLongDesc  = `Prints examples of commands for debugging processes`
+	parseExample   = `
+	### Example commands for debugging processes
+	shutils proc`
+)
+
+func Init() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:              "proc [no options!]",
+		Short:            parseShortDesc,
+		Long:             parseLongDesc,
+		Example:          parseExample,
+		TraverseChildren: true,
+		Run: func(cmd *cobra.Command, args []string) {
+			fmt.Println(`
 # Get error codes from processes
 errno -l # List of error codes
 errno ENOENT # description of error code from process
@@ -55,3 +78,13 @@ ps U user # Kill all processes belonging to a user
 slay -clean user # Kills all remaining processes from the above step
 
 cat /etc/services | grep -i tmux # To see the port and protocol that tmux is using
+
+# For debugging system and library calls in programs
+strace ls -i foo # Trace the system calls for the command
+ltrace ls -i foo # Trace the library calls for the command
+			`)
+		},
+	}
+
+	return cmd
+}

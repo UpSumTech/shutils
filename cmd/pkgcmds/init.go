@@ -1,5 +1,28 @@
-#! /usr/bin/env bash
+package pkgcmds
 
+import (
+	"fmt"
+
+	"github.com/spf13/cobra"
+)
+
+var (
+	parseShortDesc = `Prints examples of commands to list packages and info about them on a distro`
+	parseLongDesc  = `Prints examples of commands to list packages and info about them on a distro`
+	parseExample   = `
+	### Example commands for listing the package and distro info etc
+	shutils pkg`
+)
+
+func Init() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:              "pkg [no options!]",
+		Short:            parseShortDesc,
+		Long:             parseLongDesc,
+		Example:          parseExample,
+		TraverseChildren: true,
+		Run: func(cmd *cobra.Command, args []string) {
+			fmt.Println(`
 sudo apt-get install moreutils # Just install moreutils and thank me later
 sudo apt-get install iputils-arping # package to send ARP requests at the ethernet level
 sudo apt-get install tcptraceroute # useful to trace route with tcp instead of icmp
@@ -23,3 +46,9 @@ rpm -qf /bin/echo # List the package the file originated from
 
 # To get a quick summary of what this binary might be doing. If you suspect something you have never seen before
 whatis nc
+			`)
+		},
+	}
+
+	return cmd
+}

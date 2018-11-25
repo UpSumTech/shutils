@@ -1,8 +1,24 @@
-#! /usr/bin/env bash
+package dockercmds
 
-docker ps --filter status=running # Get the running containers
-docker ps --filter status=running | grep -v POD | grep -e <container_name>_<deployment_name> | cut -d " " -f1 # Get container id for deployment inside k8s node
-docker inspect <container_id> -f "{{.State.Pid}}" # Get the host pid of the running container
+import (
+	"fmt"
+
+	"github.com/spf13/cobra"
+)
+
+func DockerDebugCmds() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "debug [no options!]",
+		Short: `docker debug commands`,
+		Long:  `docker debug commands`,
+		Example: `
+### Example commands for debugging docker containers
+shutils docker debug
+		`,
+		Run: func(cmd *cobra.Command, args []string) {
+			fmt.Println(`
+# Get the host pid of the running container
+docker inspect <container_id> -f "{{.State.Pid}}"
 
 # Get all the env vars inside the container process namespace
 cat /proc/<container_pid_on_host>/environ | sed -E 's#([A-Z_0-9]*)=([\s]*)#\n\1=\2#g'; echo
@@ -34,3 +50,9 @@ nsenter -t <container_pid_on_host> -n tcpdump -i eth0 -A -s0
 
 # tcpdump inside the containers network namespace for all incoming/outgoing traffic to mysql instance
 nsenter -t <container_pid_on_host> tcpdump -i eth0 -A any host <mysql_host_or_ip> and port 3306
+			`)
+		},
+	}
+
+	return cmd
+}

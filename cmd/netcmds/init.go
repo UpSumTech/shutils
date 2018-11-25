@@ -1,5 +1,28 @@
-#! /usr/bin/env bash
+package netcmds
 
+import (
+	"fmt"
+
+	"github.com/spf13/cobra"
+)
+
+var (
+	parseShortDesc = `Prints examples of debugging network`
+	parseLongDesc  = `Prints examples of debugging network`
+	parseExample   = `
+	### Example commands for debugging network
+	shutils db`
+)
+
+func Init() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:              "net [no options!]",
+		Short:            parseShortDesc,
+		Long:             parseLongDesc,
+		Example:          parseExample,
+		TraverseChildren: true,
+		Run: func(cmd *cobra.Command, args []string) {
+			fmt.Println(`
 telnet github.com 22 # try to see if port is accepting connections on remote machine
 curl icanhazip.com # find external ip of machine easily
 
@@ -178,3 +201,9 @@ ip monitor route # Monitor route table changes
 
 ip netconf show # View sysctl config on the machine
 ip netconf show dev docker0 # View sysctl config on the machine for a specific device
+			`)
+		},
+	}
+
+	return cmd
+}

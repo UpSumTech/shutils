@@ -1,7 +1,30 @@
-#!/usr/bin/env bash
+package ec2cmds
 
+import (
+	"fmt"
+
+	"github.com/spf13/cobra"
+)
+
+var (
+	parseShortDesc = `Prints commands for debugging the state of ec2 instances specifically`
+	parseLongDesc  = `Prints commands for debugging the state of ec2 instances specifically`
+	parseExample   = `
+	### Example commands for ec2 instances
+	shutils ec2`
+)
+
+func Init() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:              "ec2 [no options!]",
+		Short:            parseShortDesc,
+		Long:             parseLongDesc,
+		Example:          parseExample,
+		TraverseChildren: true,
+		Run: func(cmd *cobra.Command, args []string) {
+			fmt.Println(`
 # Try to see if port is accepting connections on remote machine
-telnet 54-190-204-211.us-west-2.compute.amazonaws.com 22
+telnet <ec2_dns> 22
 
 # To debug init logs
 cat /var/log/cloud-init-output.log # To see the logs of the bootstrap process on the NAT box
@@ -20,3 +43,9 @@ apt-get install -y -qq certbot python3-certbot-dns-route53 # install certbot and
 
 # Generate the certs with certbot
 certbot certonly --dns-route53 --expand --noninteractive --agree-tos --email developer@example.com -d example.com
+			`)
+		},
+	}
+
+	return cmd
+}

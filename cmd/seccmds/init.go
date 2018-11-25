@@ -1,5 +1,28 @@
-#! /usr/bin/env bash
+package seccmds
 
+import (
+	"fmt"
+
+	"github.com/spf13/cobra"
+)
+
+var (
+	parseShortDesc = `Prints examples of commands related to encryption or ssl etc`
+	parseLongDesc  = `Prints examples of commands related to encryption or ssl etc`
+	parseExample   = `
+	### Example commands for certs and encryption etc
+	shutils sec`
+)
+
+func Init() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:              "sec [no options!]",
+		Short:            parseShortDesc,
+		Long:             parseLongDesc,
+		Example:          parseExample,
+		TraverseChildren: true,
+		Run: func(cmd *cobra.Command, args []string) {
+			fmt.Println(`
 runlevel # Get the current run level of the system
 uptime # How long has this machine been running
 who # who is currently logged into the system
@@ -72,3 +95,9 @@ keytool -import -alias server-keystore -keystore client-truststore.ts -file serv
 openssl pkcs12 -export -inkey private-key.pem -in combined-chain-and-private-key.pem -name some-random-name -out some-random-name.p12
 # import pkcs file into jks file using java keytools
 keytool -importkeystore -srckeystore some-random-name.p12 -srcstoretype pkcs12 -destkeystore dest-keystore-to-use-with-java-services.jks
+			`)
+		},
+	}
+
+	return cmd
+}
