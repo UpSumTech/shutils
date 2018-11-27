@@ -3,6 +3,7 @@ package diskcmds
 import (
 	"fmt"
 
+	"github.com/davecgh/go-spew/spew"
 	"github.com/spf13/cobra"
 )
 
@@ -14,6 +15,7 @@ var (
 	shutils disk`
 )
 
+// Init instantiates the disk commands
 func Init() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:              "disk [no options!]",
@@ -22,7 +24,7 @@ func Init() *cobra.Command {
 		Example:          parseExample,
 		TraverseChildren: true,
 		Run: func(cmd *cobra.Command, args []string) {
-			fmt.Println(`
+			str := `
 ls -lah # Display all files in current dir in human readable format
 ls -ltr # Display files newest last
 du -sh ~/**/* | sort -rn # Display dirs in sorted sizes
@@ -31,8 +33,9 @@ cat /proc/partitions # Display partitions
 lsblk -f # Display block storage devices as a tree view. Should list the same partitions above.
 mount | column -t # Get all mounted filesystems
 cat /etc/fstab # Get the static file system info
-free -m # Get free memory statistics for the system
-			`)
+free -m # Get free memory statistics for the system`
+			fmt.Println(str)
+			spew.Dump(str)
 		},
 	}
 

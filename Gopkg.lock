@@ -2,10 +2,28 @@
 
 
 [[projects]]
+  branch = "master"
+  name = "github.com/davecgh/go-spew"
+  packages = ["spew"]
+  revision = "d8f796af33cc11cb798c1aaeb27a4ebc5099927d"
+
+[[projects]]
   name = "github.com/inconshreveable/mousetrap"
   packages = ["."]
   revision = "76626ae9c91c4f2a10f34cad8ce83ea42c93bb75"
   version = "v1.0"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/jcelliott/lumber"
+  packages = ["."]
+  revision = "dd349441af25132d146d7095c6693a15431fc9b1"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/nanobox-io/golang-scribble"
+  packages = ["."]
+  revision = "336beac0a992ed9abaf4ef8e7042ba7fe3335c06"
 
 [[projects]]
   branch = "master"
@@ -22,6 +40,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "fd56cc1810ff527dc29fa5ac153938af6d8df6a405c953638f1275f24d6073d9"
+  inputs-digest = "10518b9bf8750ab04988a4f6ddb7fccaa46ce6cb85cb91de4e4eb4a86e41ce47"
   solver-name = "gps-cdcl"
   solver-version = 1

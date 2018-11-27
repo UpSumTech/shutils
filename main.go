@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/spf13/cobra"
 	"github.com/sumanmukherjee03/shutils/cmd/dbcmds"
+	"github.com/sumanmukherjee03/shutils/cmd/diskcmds"
 	"github.com/sumanmukherjee03/shutils/cmd/dockercmds"
 	"github.com/sumanmukherjee03/shutils/cmd/ec2cmds"
 	"github.com/sumanmukherjee03/shutils/cmd/filecmds"
@@ -30,6 +31,7 @@ func main() {
 		TraverseChildren: true,
 	}
 
+	rootCmd.AddCommand(diskcmds.Init())
 	rootCmd.AddCommand(kubecmds.Init())
 	rootCmd.AddCommand(dockercmds.Init())
 	rootCmd.AddCommand(filecmds.Init())
