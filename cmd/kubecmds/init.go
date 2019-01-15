@@ -23,5 +23,6 @@ func Init() *cobra.Command {
 	cmd.AddCommand(KubectlPodCmds())
 	cmd.AddCommand(KubectlRunCmds())
 	cmd.AddCommand(KubectlDeployCmds())
+	cmd.AddCommand(KubectlDebugCmds())
 	return cmd
 }

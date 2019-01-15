@@ -19,6 +19,9 @@ shutils kubectl run
 			fmt.Println(`
 # run a kubernetes pod with a specific service account
 kubectl run -i -t --rm test-pod --image=ubuntu:16.04 --restart=Never --serviceaccount=specificServiceAccount --image-pull-policy=Always --env FOO=$FOO --env BAR=$BAR
+
+# kubectl run arbitrary pod and execute some task quickly
+kubectl run test-pod --record --wait=true --image-pull-policy=Always --image=ubuntu:16.04 --restart=Never --env="DB_HOST=mysql.example.com" --env="DB_PORT=3306" --command -- /bin/bash -c 'while true; do sleep 3; done'; sleep 10; kubectl get pod test-pod; kubectl cp $HOME/.secrets test-pod:/root/.secrets; kubectl cp $(pwd) test-pod:/root/example-repo; kubectl exec test-pod -- /bin/bash -c "cd /root/example-repo; ./bin/run.sh"; kubectl delete pod test-pod
 			`)
 		},
 	}
