@@ -29,6 +29,7 @@ curl icanhazip.com # find external ip of machine easily
 dig rainandrhyme.com # get DNS records for a domain
 dig @8.8.8.8 rainandrhyme.com # get DNS records using a google server
 dig +noall +answer @8.8.8.8 rainandrhyme.com # only get the answer to the DNS resolution and not the query parts
+dig +trace @8.8.8.8 rainandrhyme.com # trace recursively how the DNS is getting resolved
 dig @localhost rainandrhyme.com # get DNS records using the local DNS server you are running something like dnsmasq
 getent hosts rainandrhyme.com # check if you have a DNS entry in your hosts file
 
