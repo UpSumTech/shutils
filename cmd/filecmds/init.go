@@ -78,7 +78,9 @@ find / -gid 1010 -exec chown -v 1001:1001 {} \;
 
 readlink /usr/local/bin/awk # Quickly get where the file is pointing to
 
-stat foo # Give detailed info about a file
+# Give detailed info about a file
+stat foo # Stats for a file
+ldd /usr/local/bin/mysqld # Shows all the dynamic dependencies of a binary
 
 # Tarpipe example to copy src to dest preserving perms and special flags etc
 (cd src && tar -cf - .) | (cd dest && tar -xpf -)
