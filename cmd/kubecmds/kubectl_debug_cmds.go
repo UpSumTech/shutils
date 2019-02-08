@@ -25,6 +25,12 @@ kubectl get events  --sort-by='.metadata.creationTimestamp' -o json | jq '.items
 
 # List all env vars for a specific deployment
 kubectl set env deployment/webapp --list
+
+# Drain pods from a node that is unhealthy
+kubectl drain node.example.com --ignore-daemonsets --delete-local-data
+
+# Quick sample deployment to test scheduling on a node
+kubectl run hello-world --replicas=1 --image=gcr.io/google-samples/node-hello:1.0  --port=8080 --overrides='{ "apiVersion": "apps/v1beta1", "spec": { "template": { "spec": { "nodeSelector": { "kubernetes.io/hostname": "nodename.example.com" } } } } }'
 			`)
 		},
 	}
