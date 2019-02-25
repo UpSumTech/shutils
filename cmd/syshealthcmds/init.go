@@ -34,6 +34,12 @@ df -h # Look at the current disk usage
 dd if=/dev/zero of=/mnt/swapfile bs=1M count=1025 # Create a swap file of 1024Mb to increase virtual memory of the system
 swapon -s # List the current swap partitions
 swapon /mnt/swapfile # Activate the new swap file
+
+#### Journalctl usage for viewing logs ################
+journalctl # For all logs
+journalctl -r | less # Look at logs in reverse
+journalctl -u ssh -f # To follow ssh logs
+journalctl --since "2019-01-30 12:30:00" --until "2019-01-30 14:30:00" -u ssh # Show ssh logs for that period
 			`)
 		},
 	}
