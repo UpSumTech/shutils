@@ -40,6 +40,7 @@ pstree -aclp <pid> # Get an uncompressed version of process tree. Useful for pro
 
 fuser -av /proc/meminfo # Find what process is using this file. Try this with the top command
 fuser -av 22/tcp # Find what processes are using this socket
+fuser -cuk 22/tcp # Find and kill all processes using this socket
 
 pmap -xp $(pgrep -u root ssh) # Get the memory footprint of the ssh processes owned by root
 
