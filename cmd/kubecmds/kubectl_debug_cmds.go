@@ -26,6 +26,9 @@ kubectl get events  --sort-by='.metadata.creationTimestamp' -o json | jq '.items
 # List all env vars for a specific deployment
 kubectl set env deployment/webapp --list
 
+# To check the state of a cluster and all of its components
+kubectl get componentstatus
+
 # Drain pods from a node that is unhealthy
 kubectl drain node.example.com --ignore-daemonsets --delete-local-data
 
@@ -34,6 +37,18 @@ kubectl run hello-world --replicas=1 --image=gcr.io/google-samples/node-hello:1.
 
 # Quickly drain node on kube cluster
 kubectl drain <NODE_NAME> --ignore-daemonsets --delete-local-data
+
+# To wipe out config for a cluster and start afresh
+# Especially required if certs or auth has changed for the k8s cluster
+kubectl config unset users.my.cluster.name.co-basic-auth
+kubectl config delete-context my.cluster.name
+
+# To get the pods with a label and custom output columns
+# This is especially useful when iterating over multiple pods at once with something like xargs
+kubectl get pod -l app=<app-label> --no-headers -o custom-columns=:.metadata.name,:.spec.nodeName
+
+# To test access to k8s objects by impersonating a different user and group
+kubectl get pod nginx-hjd72gsj-xj6pc --as=new_dev@bench.co --as-group=FrontEnd
 			`)
 		},
 	}
