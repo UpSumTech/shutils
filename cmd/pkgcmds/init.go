@@ -46,6 +46,9 @@ rpm -qf /bin/echo # List the package the file originated from
 
 # To get a quick summary of what this binary might be doing. If you suspect something you have never seen before
 whatis nc
+
+# To find out what package installed a file
+dpkg -S $(command -v ab)
 			`)
 		},
 	}
