@@ -103,11 +103,13 @@ mkfifo response_pipe && nc -l 9999  0<response_pipe | nc sectools.org 80 1>respo
 fuser -n tcp 8080 # Identify a process using a port
 fuser -k -n tcp 8080 # To free up the 8080 tcp port by killing the process running it
 
-
 # Firewall in ubuntu
 ufw allow 22 # Allow ssh port if firewall is there
 ufw deny 22 # Deny ssh port if firewall is there
 
+######### tcpdump commands #########
+tcpdump -vvv -i any -s0 -A -w <file_name>.dump
+tcpdump 'host (182.101.17.43 or 182.101.17.42) and port 80' -i any -s0
 
 ######### iproute commands #########
 

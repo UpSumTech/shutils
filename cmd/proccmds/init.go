@@ -83,6 +83,12 @@ cat /etc/services | grep -i tmux # To see the port and protocol that tmux is usi
 # For debugging system and library calls in programs
 strace ls -i foo # Trace the system calls for the command
 ltrace ls -i foo # Trace the library calls for the command
+
+# To run a process in a detached screen session
+screen -S <screen-session-name> -dm bash -c "htop"
+# To kill a screen session programatically
+screen -XS "<screen-session-name>" quit
+sudo su -l root -c "screen -S <screen-session-name> -dm bash -c \"tcpdump -vvv -i any -s0 -A -w nginx.dump\""
 			`)
 		},
 	}
