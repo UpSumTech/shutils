@@ -108,8 +108,20 @@ ufw allow 22 # Allow ssh port if firewall is there
 ufw deny 22 # Deny ssh port if firewall is there
 
 ######### tcpdump commands #########
+
 tcpdump -vvv -i any -s0 -A -w <file_name>.dump
-tcpdump 'host (182.101.17.43 or 182.101.17.42) and port 80' -i any -s0
+tcpdump 'host (182.101.17.43 or 182.101.17.42) and port 80' -i eth0 -s0
+
+######### wireshark filter commands ##########
+
+# Find all packets with src and dest ips or CIDRs
+(ip.dst==52.7.68.129 || ip.dst==52.203.198.115) && (ip.src==172.17.0.0/16)
+
+# Find all packets with src and dest ips or CIDRs that are experiencing conn resets
+(ip.dst==52.7.68.129 || ip.dst==52.203.198.115) && (ip.src==172.17.0.0/16) && (tcp.flags.reset == 1)
+
+# Follow a tcp stream
+tcp.stream == 28
 
 ######### iproute commands #########
 
