@@ -68,8 +68,11 @@ select * from table_constraints where table_name = "<table_name>" and table_sche
 use information_schema;
 select * from statistics where table_name = "<table_name>" and table_schema = "<db_name>";
 
-# In RDS mysql kill a proc like so
-CALL mysql.rds_kill(<pid_from_processlist>);
+# In RDS to kill a session that is running on a particular thread id
+CALL mysql.rds_kill(<thread_id_from_processlist>);
+
+# In RDS to kill a query that is running on a particular thread id
+CALL mysql.rds_kill_query(<thread_id_from_processlist>);
 			`)
 		},
 	}
