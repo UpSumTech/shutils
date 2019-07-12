@@ -30,6 +30,13 @@ iptables -L -n -v # List all firewall settings
 iptables -L FORWARD # List rules for the FORWARD chain
 iptables -L -t nat # List the routing policies for NAT table
 
+# Displaying rules of all the different tables of iproute
+iptables -t filter -vL # Show rules of the filter table
+iptables -t nat -vL # Show rules of the nat table
+iptables -t mangle -vL # Show rules of the mangle table
+iptables -t raw -vL # Show rules of the raw table
+iptables -t security -vL # Show rules of the security table
+
 iptables -Z # Clear the counters for all the chains
 iptables -Z INPUT # Clear the counters for the INPUT chain
 
