@@ -9,12 +9,12 @@ var (
 	parseLongDesc  = `Prints examples of complex networking commands`
 	parseExample   = `
 	### Available commands for netcmds
-	shutils netcmds`
+	shutils net`
 )
 
 func Init() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "netcmds [sub]",
+		Use:     "net [sub]",
 		Short:   parseShortDesc,
 		Long:    parseLongDesc,
 		Example: parseExample,
