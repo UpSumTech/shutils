@@ -41,11 +41,21 @@ show shared_preload_libraries;
 # To show RDS plugins
 SHOW rds.extensions;
 
-# To show version in postgres
+# To display version/time etc general information in postgres
 select version();
+select CURRENT_DATE;
+select CURRENT_TIME;
+select CURRENT_TIME - interval '1 hour';
+
+select count(*) from <table_name> where created_on > (now()::timestamp without time zone - interval '10 minute');
+select source,name,setting,boot_val,reset_val from pg_settings where name != 'rds.extensions' and boot_val != reset_val order by name;
+select * from pg_replication_slots;
 
 # To show current activity in a postgres database
 select * from pg_stat_activity;
+
+# To show how much IO happens on the different indexes in postgres
+select * from pg_statio_all_indexes where schemaname = 'public';
 
 # To show different kinds of grants in a postgres database
 select * from information_schema.role_table_grants where grantee = 'your_user';

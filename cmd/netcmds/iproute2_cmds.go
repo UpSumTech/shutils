@@ -22,6 +22,8 @@ shutils net iproute2
 ip addr show docker0 # Show the address of docker0 interface
 ip addr show up # Show up and running interfaces
 
+ip --brief --json addr show up # Better output
+
 ip addr add 192.20.10.1/24 dev eth0 # Add a specific address to an interface
 ip addr delete 192.20.10.1/24 dev eth0 # Remove an address from an interface
 ip addr flush dev eth0 # Flush all addresses from an interface

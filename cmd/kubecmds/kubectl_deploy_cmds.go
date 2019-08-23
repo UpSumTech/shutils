@@ -37,6 +37,9 @@ kubectl set image deployment/webapp app=dockerhub.com/example.com/app:quickfix -
 
 # Set env var image for a deployment quickly to put out a fire
 kubectl set env deployment/webapp DB_HOST=db.example.com
+
+# To manually trigger a job from a cron job
+kubectl create job --from=cronjob/<cron-job-name> <new-manual-job-name>
 			`)
 		},
 	}
