@@ -48,7 +48,7 @@ kubectl config delete-context my.cluster.name
 kubectl get pod -l app=<app-label> --no-headers -o custom-columns=:.metadata.name,:.spec.nodeName
 
 # To test access to k8s objects by impersonating a different user and group
-kubectl get pod nginx-hjd72gsj-xj6pc --as=new_dev@bench.co --as-group=FrontEnd
+kubectl get pod nginx-pod-1 --as=dev@example.com --as-group=FrontEnd
 			`)
 		},
 	}
