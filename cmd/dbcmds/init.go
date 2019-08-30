@@ -14,6 +14,7 @@ var (
 	shutils db`
 )
 
+// Init - initiates db commands
 func Init() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:              "db [no options!]",
@@ -31,7 +32,7 @@ psql -h <postgres_host> -p 5439 -U <user> -d <db_name> -a -w -f up_impression_ag
 ssh -f -L <high_localhost_port>:<database_server_host>:<database_server_port> user@proxy_server -N
 pgcli -h localhost -p high_localhost_port -U database_user database_name
 
-############# Inside psql console ##############
+###################### Postgres commands #####################
 # Get all DB parameters in postgres
 select name, setting, boot_val, reset_val, unit from pg_settings order by name;
 
@@ -62,6 +63,19 @@ select * from information_schema.role_table_grants where grantee = 'your_user';
 select * from information_schema.role_column_grants where grantee = 'your_user';
 select * from information_schema.role_routine_grants where grantee = 'your_user';
 
+# Show all postgres users
+select * from pg_user;
+
+# Show all postgres groups
+select * from pg_group;
+
+# Show all postgres databases
+select * from pg_database;
+
+# Show postgres namespace named
+select * from pg_namespace where nspname = '<your pg namespace>';
+
+###################### MYSQL ##########################
 # In mysql innodb to show metrics and stats
 use information_schema;
 select name, subsystem, count, type, comment from INNODB_METRICS where status = 'enabled';
