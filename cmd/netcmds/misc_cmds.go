@@ -19,7 +19,12 @@ shutils net misc
 		Run: func(cmd *cobra.Command, args []string) {
 			fmt.Println(`
 telnet github.com 22 # try to see if port is accepting connections on remote machine
+
+# test connectivity without telnet or nc installed
+timeout 1 bash -c '</dev/tcp/google.com/443 && echo Port is open || echo Port is closed' || echo Connection timeout
+
 curl icanhazip.com # find external ip of machine easily
+dig myip.opendns.com # find external ip via DNS query, helps if curl/wget not installed
 
 dig rainandrhyme.com # get DNS records for a domain
 dig @8.8.8.8 rainandrhyme.com # get DNS records using a google server
@@ -75,6 +80,12 @@ ssh -A -J jump.example.com -i ~/.ssh/priv_key_for_jumphost.pem ubuntu@dev.exampl
 # ssh tunnel into a remote server to use a service on a blocked port running on that server
 ssh -f -L <high_localhost_port>:localhost:<servers_blocked_port> user@proxy_server -N
 nc -z localhost <high_localhost_port> # To verify that the tunnel is working
+
+# Removes all keys belonging to a hostname from known_hosts
+ssh-keygen -R <hostname>
+
+# Generate public keypair for a given private key
+ssh-keygen -y -f private.pem
 
 # To send and receive files using nc
 tar cf - * | netcat <ip_of_receiving_host> <port> # Tar and send files to a specific port on another host from a machine
