@@ -49,6 +49,9 @@ kubectl get pod -l app=<app-label> --no-headers -o custom-columns=:.metadata.nam
 
 # To test access to k8s objects by impersonating a different user and group
 kubectl get pod nginx-pod-1 --as=dev@example.com --as-group=FrontEnd
+
+# To find out which k8s services are using external load balancers
+kubectl get services -o custom-columns=:.metadata.name --no-headers | grep -v kubernetes | xargs -n 1 -I % /bin/bash -c "echo -n %; echo -n ' '; kubectl get service % -o jsonpath='{ ..hostname }'; echo" | tee | column -t -s ' '
 			`)
 		},
 	}

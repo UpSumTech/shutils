@@ -42,6 +42,9 @@ show shared_preload_libraries;
 # To show RDS plugins
 SHOW rds.extensions;
 
+# To show shared libraries
+SHOW shared_preload_libraries;
+
 # To display version/time etc general information in postgres
 select version();
 select CURRENT_DATE;
