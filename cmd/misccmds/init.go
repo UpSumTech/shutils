@@ -30,6 +30,12 @@ uuidgen # Generates a uuid
 
 # To look at aggregated logs from a bunch of servers
 multitail --merge-all -cS apache -cS log4j -e 'error' -l 'ssh -t user@server1 "tail -f /var/log/nginx.log"' -cS apache -cS log4j -e 'error' -l 'ssh -t user@server2 "tail -f /var/log/nginx.log"' --no-mergeall
+
+# To run apache benchmarks against a server while keeping the connection alive for 30 seconds
+ab -c 10 -t 30 -k http://example.com/
+
+# To run apache benchmarks against a server while keeping the connection alive for 300 requests
+ab -c 10 -n 300 -k http://example.com/
 			`)
 		},
 	}

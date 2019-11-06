@@ -45,6 +45,9 @@ SHOW rds.extensions;
 # To show shared libraries
 SHOW shared_preload_libraries;
 
+# To see replication lag between master and a replica
+SELECT extract(epoch from now() - pg_last_xact_replay_timestamp()) AS slave_lag
+
 # To display version/time etc general information in postgres
 select version();
 select CURRENT_DATE;
