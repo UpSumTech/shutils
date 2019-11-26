@@ -23,6 +23,9 @@ kubectl get events  --sort-by='.metadata.creationTimestamp' -o json
 # Get kubernetes events sorted by creation time for a specific deployment
 kubectl get events  --sort-by='.metadata.creationTimestamp' -o json | jq '.items | sort_by(.lastTimestamp) | .[] | select(.involvedObject.name | contains("<deployment_name>"))'
 
+# Get kubernetes events and messages and pods that are created by specific deployment
+kubectl get events --sort-by='.metadata.creationTimestamp' -o json | jq '.items | sort_by(.lastTimestamp) | .[] | select(.involvedObject.name | contains("<deployment_name>"))' | jq -r "[.message, .metadata.name, .firstTimestamp]"
+
 # List all env vars for a specific deployment
 kubectl set env deployment/webapp --list
 
