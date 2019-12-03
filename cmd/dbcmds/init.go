@@ -56,10 +56,18 @@ select CURRENT_TIME - interval '1 hour';
 
 select count(*) from <table_name> where created_on > (now()::timestamp without time zone - interval '10 minute');
 select source,name,setting,boot_val,reset_val from pg_settings where name != 'rds.extensions' and boot_val != reset_val order by name;
+
+# Lookup all replication slots
 select * from pg_replication_slots;
+# Lookup the current checkpoint
+select pg_current_wal_lsn();
+# Lookup the restart_lsn, and confirmed_flush_lsn for the slots
+# lsn is generally like this current > last confirmed flush > last restart checkpoint
+select slot_name, restart_lsn, confirmed_flush_lsn from pg_replication_slots;
 
 # To show current activity in a postgres database
 select * from pg_stat_activity;
+select * from pg_stat_activity where usename like '<username>%';
 
 # To show how much IO happens on the different indexes in postgres
 select * from pg_statio_all_indexes where schemaname = 'public';
@@ -80,6 +88,9 @@ select * from pg_database;
 
 # Show postgres namespace named
 select * from pg_namespace where nspname = '<your pg namespace>';
+
+# To kill a postgres RDS backend proc
+select pg_terminate_backend(<pid>);
 
 ###################### MYSQL ##########################
 # In mysql innodb to show metrics and stats
