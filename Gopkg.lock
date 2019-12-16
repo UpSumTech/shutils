@@ -3,43 +3,59 @@
 
 [[projects]]
   branch = "master"
+  digest = "1:ffe9824d294da03b391f44e1ae8281281b4afc1bdaa9588c9097785e3af10cec"
   name = "github.com/davecgh/go-spew"
   packages = ["spew"]
+  pruneopts = "UT"
   revision = "d8f796af33cc11cb798c1aaeb27a4ebc5099927d"
 
 [[projects]]
+  digest = "1:870d441fe217b8e689d7949fef6e43efbc787e50f200cb1e70dbca9204a1d6be"
   name = "github.com/inconshreveable/mousetrap"
   packages = ["."]
+  pruneopts = "UT"
   revision = "76626ae9c91c4f2a10f34cad8ce83ea42c93bb75"
   version = "v1.0"
 
 [[projects]]
   branch = "master"
+  digest = "1:89df516e4ec36be36c4ccc661f2e9007ccb13d4e970e3b7e9c96e87fe4ceb5ba"
   name = "github.com/jcelliott/lumber"
   packages = ["."]
+  pruneopts = "UT"
   revision = "dd349441af25132d146d7095c6693a15431fc9b1"
 
 [[projects]]
   branch = "master"
+  digest = "1:4085fab6ad148702fb359c14d5602201d6bd9c3b8dd4162a2fd15a4e9dab3ad1"
   name = "github.com/nanobox-io/golang-scribble"
   packages = ["."]
+  pruneopts = "UT"
   revision = "336beac0a992ed9abaf4ef8e7042ba7fe3335c06"
 
 [[projects]]
   branch = "master"
+  digest = "1:94fa1f2ef03d8c002dcfc02f4d778b95c7db66d2304ba718a9cade5bf88c91a1"
   name = "github.com/spf13/cobra"
   packages = ["."]
+  pruneopts = "UT"
   revision = "fe5e611709b0c57fa4a89136deaa8e1d4004d053"
 
 [[projects]]
+  digest = "1:c1b1102241e7f645bc8e0c22ae352e8f0dc6484b6cb4d132fa9f24174e0119e2"
   name = "github.com/spf13/pflag"
   packages = ["."]
+  pruneopts = "UT"
   revision = "298182f68c66c05229eb03ac171abe6e309ee79a"
   version = "v1.0.3"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "10518b9bf8750ab04988a4f6ddb7fccaa46ce6cb85cb91de4e4eb4a86e41ce47"
+  input-imports = [
+    "github.com/davecgh/go-spew/spew",
+    "github.com/nanobox-io/golang-scribble",
+    "github.com/spf13/cobra",
+  ]
   solver-name = "gps-cdcl"
   solver-version = 1
