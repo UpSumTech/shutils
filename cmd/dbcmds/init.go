@@ -109,6 +109,19 @@ select * from table_constraints where table_name = "<table_name>" and table_sche
 use information_schema;
 select * from statistics where table_name = "<table_name>" and table_schema = "<db_name>";
 
+# To run a single command for mysql using the cli
+mycli -h localhost -u <user> -p<password> -e "show processlist;"
+
+# To see processes that are not administrative
+select * from processlist where User not in ('rdsadmin');
+
+# To see transactions that are creating locks
+select * from innodb_locks;
+select * from innodb_lock_waits;
+select * from innodb_locks where lock_table = <db_name>.<table_name>;
+select innodb_locks.* from innodb_locks join innodb_lock_waits on (innodb_locks.lock_trx_id = innodb_lock_waits.blocking_trx_id);
+select trx_id, trx_requested_lock_id, trx_mysql_thread_id, trx_query from innodb_trx where trx_state = 'lock wait';
+
 # In RDS to kill a session that is running on a particular thread id
 CALL mysql.rds_kill(<thread_id_from_processlist>);
 
