@@ -89,6 +89,8 @@ screen -S <screen-session-name> -dm bash -c "htop"
 # To kill a screen session programatically
 screen -XS "<screen-session-name>" quit
 sudo su -l root -c "screen -S <screen-session-name> -dm bash -c \"tcpdump -vvv -i any -s0 -A -w nginx.dump\""
+
+service --status-all # List all services on an ubuntu box
 			`)
 		},
 	}

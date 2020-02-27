@@ -31,6 +31,8 @@ find . -type d -ls
 
 # find and replace some text in a file in one line
 find . -type f -name "*.json" -print | xargs grep -i 'string' | awk '{print $1}' | sed -e 's#:##g' | xargs -n 1 -I % sed -i -e 's#"string"#"newstring"#g' %
+# Another quick find and replace operation in a line across all files
+find . -type f -exec sed -i 's/oldstring/new string/g' {} \;
 
 # find files with certain permission settings
 find . -type f -perm 600 | ifne echo "executable files found"

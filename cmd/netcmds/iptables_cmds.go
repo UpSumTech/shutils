@@ -23,22 +23,35 @@ shutils net iptables
 apt-get install iptables-persistent && netfilter-persistent save # For persisting iptable changes across reboots on ubuntu
 service iptables save # For persisting iptables on rhel
 
+######################################################################################################
+###################### Displaying rules of all the different tables of iproute #######################
+######################################################################################################
 iptables -S # List all active iptable rules
-iptables -S FORWARD # List all forward rules
+
+iptables -t filter -S FORWARD # List all forward rules on the filter table
 iptables -L # List rules by chain
 iptables -L -n -v # List all firewall settings
 iptables -L FORWARD # List rules for the FORWARD chain
-iptables -L -t nat # List the routing policies for NAT table
 
-# Displaying rules of all the different tables of iproute
 iptables -t filter -vL # Show rules of the filter table
 iptables -t nat -vL # Show rules of the nat table
 iptables -t mangle -vL # Show rules of the mangle table
 iptables -t raw -vL # Show rules of the raw table
 iptables -t security -vL # Show rules of the security table
 
+######################################################################################################
+############################### Cleanup all rules of different tables ################################
+######################################################################################################
+iptables -t filter -F # Flush all chains of filter table
+iptables -t filter -X # Delete all non default chains on the filter table
 iptables -Z # Clear the counters for all the chains
 iptables -Z INPUT # Clear the counters for the INPUT chain
+iptables -t nat -F # Flush all riles of the nat table
+iptables -t nat -X # Delete all non default chains on the nat table
+iptables -t mangle -F # Flush all chains of the mangle table
+iptables -t mangle -X # Delete all non default chains on the mangle table
+iptables -F INPUT # Flush the INPUT chain of the filter table
+iptables -X # Delete all non-default chains like DOCKER, DOCKER-ISOLATION etc of the filter table
 
 iptables -D INPUT 3 # To delete the third rule from the INPUT chain based on the output you saw from the list command
 iptables -D INPUT -m conntrack --ctstate INVALID -j DROP # To drop a specific rule (everything coming after '-D INPUT')
@@ -48,12 +61,6 @@ iptables -P INPUT ACCEPT # Set the default policy to ACCEPT for the INPUT chain 
 iptables -P FORWARD ACCEPT # Set the default policy to ACCEPT for the FORWARD chain to allow access to the machine and prevent being locked out of ssh
 iptables -P OUTPUT ACCEPT # Set the default policy to ACCEPT for the OUTPUT chain to allow access to the machine and prevent being locked out of ssh
 
-iptables -t nat -F # Flush the nat table
-iptables -t mangle -F # Flush the mangle table
-
-iptables -F # Flush all chains
-iptables -F INPUT # Flush the INPUT chain
-iptables -X # Delete all non-default chains like DOCKER, DOCKER-ISOLATION etc
 
 # Enable the loopback interface for the INPUT and OUTPUT chain
 iptables -A INPUT -i lo -j ACCEPT
@@ -81,6 +88,11 @@ iptables -A OUTPUT -p tcp --sport 873 -m conntrack --ctstate ESTABLISHED -j ACCE
 # Combining the ssh and rsync rules into one
 iptables -A INPUT -p tcp -s 20.30.40.15/24 -m multiport --dport 22,873 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT # Allow incoming rsync traffic from a specific CIDR
 iptables -A OUTPUT -p tcp -m multiport --sport 22,873 -m conntrack --ctstate ESTABLISHED -j ACCEPT # Allow outgoing traffic for rsync
+
+# Send dns requests from localhost to a consul server
+iptables -t nat -A OUTPUT -d localhost -p udp -m udp --dport 53 -j REDIRECT --to-ports 8600
+iptables -t nat -A OUTPUT -d localhost -p tcp -m tcp --dport 53 -j REDIRECT --to-ports 8600
+
 			`)
 		},
 	}

@@ -15,6 +15,7 @@ import (
 	"github.com/sumanmukherjee03/shutils/cmd/seccmds"
 	"github.com/sumanmukherjee03/shutils/cmd/syshealthcmds"
 	"github.com/sumanmukherjee03/shutils/cmd/usercmds"
+	"github.com/sumanmukherjee03/shutils/cmd/rabbitmqcmds"
 )
 
 var (
@@ -44,5 +45,6 @@ func main() {
 	rootCmd.AddCommand(seccmds.Init())
 	rootCmd.AddCommand(ec2cmds.Init())
 	rootCmd.AddCommand(misccmds.Init())
+	rootCmd.AddCommand(rabbitmqcmds.Init())
 	rootCmd.Execute()
 }
