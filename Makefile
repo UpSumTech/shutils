@@ -141,9 +141,12 @@ ifeq ($(IS_TAG_FROM_CLI), 0)
 			--build-arg NON_ROOT_USER=default \
 			-f Dockerfile \
 			-t $(BUILDER_IMAGE_NAME):$(TAG) .
-	$(info [INFO] --- Create annotated semver tag marking commit sha as a release candidate)
 	$(AT)docker tag $(BUILDER_IMAGE_NAME):$(TAG) $(DOCKERHUB_USERNAME)/$(BUILDER_IMAGE_NAME):$(TAG)
+	$(AT)docker run -u $(NON_ROOT_UID):$(NON_ROOT_GID) --name $(BUILDER_CONTAINER_NAME) $(DOCKERHUB_USERNAME)/$(BUILDER_IMAGE_NAME):$(TAG) \
+		&& docker cp $(BUILDER_CONTAINER_NAME):/var/data/build/$(REPO_NAME).tar.gz $(BUILDER_DATA_DIR)/$(REPO_NAME)-$(TAG).tar.gz \
+		&& curl -T $(BUILDER_DATA_DIR)/$(REPO_NAME)-$(TAG).tar.gz -u$(BINTRAY_USERNAME):$(BINTRAY_API_KEY) $(BINTRAY_API_URL)/content/$(BINTRAY_USERNAME)/$(BINTRAY_REPO_NAME)/$(REPO_NAME)/$(TAG)/
 	$(AT)git tag $(TAG) -am "Version:$(TAG),User:$(USER),Time:$(BUILD_TIME)"
+	$(info [INFO] --- Created annotated semver tag marking commit sha as a release candidate)
 else
 	$(info [INFO] --- Skipping building and tagging container from commit sha)
 	$(info [INFO] --- Skipping tagging git commit sha)
@@ -158,11 +161,7 @@ endif
 # Pushes the git tag
 release: build
 	$(info [INFO] --- Create release candidate)
-	$(AT)mkdir -p $(BUILDER_DATA_DIR)
-	$(AT)docker run -u $(NON_ROOT_UID):$(NON_ROOT_GID) --name $(BUILDER_CONTAINER_NAME) $(DOCKERHUB_USERNAME)/$(BUILDER_IMAGE_NAME):$(TAG) \
-		&& docker cp $(BUILDER_CONTAINER_NAME):/var/data/build/$(REPO_NAME).tar.gz $(BUILDER_DATA_DIR)/$(REPO_NAME)-$(TAG).tar.gz \
-		&& curl -X POST -u$(BINTRAY_USERNAME):$(BINTRAY_API_KEY) -d '{"name": "$(TAG)", "vcs_tag": "$(TAG)", "released": "$(BUILD_TIME)"}' $(BINTRAY_API_URL)/packages/$(BINTRAY_USERNAME)/$(BINTRAY_REPO_NAME)/$(REPO_NAME)/versions \
-		&& curl -T $(BUILDER_DATA_DIR)/$(REPO_NAME)-$(TAG).tar.gz -u $(BINTRAY_USERNAME):$(BINTRAY_API_KEY) $(BINTRAY_API_URL)/content/$(BINTRAY_USERNAME)/$(BINTRAY_REPO_NAME)/$(REPO_NAME)/$(TAG)/$(REPO_NAME)-$(TAG).tar.gz?publish=1
+	$(AT)curl -X POST -u$(BINTRAY_USERNAME):$(BINTRAY_API_KEY) $(BINTRAY_API_URL)/content/$(BINTRAY_USERNAME)/$(BINTRAY_REPO_NAME)/$(REPO_NAME)/$(TAG)/publish
 	$(AT)docker stop $(BUILDER_CONTAINER_NAME)
 	$(AT)docker rm $(BUILDER_CONTAINER_NAME)
 	$(AT)docker push $(DOCKERHUB_USERNAME)/$(BUILDER_IMAGE_NAME):$(TAG)
