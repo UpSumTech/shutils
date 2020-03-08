@@ -45,12 +45,12 @@ REPO_NAME := $(shell basename $(ROOT_DIR))
 THIS_FILE := $(lastword $(MAKEFILE_LIST))
 WIP := 0
 HOTFIX := 0
-BINTRAY_API_URL=https://api.bintray.com
+BINTRAY_API_URL="https://api.bintray.com"
 
 ifdef DEPLOY_GITHUB_TOKEN
 	GIT_REPO_URL := https://$(DEPLOY_GITHUB_TOKEN)@github.com/$(GITHUB_USERNAME)/$(REPO_NAME).git
 else
-$(error "ERROR : Please export DEPLOY_GITHUB_TOKEN to your shell")
+	$(error "ERROR : Please export DEPLOY_GITHUB_TOKEN to your shell")
 endif
 
 USER := $(shell id -un)
@@ -142,7 +142,8 @@ ifeq ($(IS_TAG_FROM_CLI), 0)
 			-f Dockerfile \
 			-t $(BUILDER_IMAGE_NAME):$(TAG) .
 	$(AT)docker tag $(BUILDER_IMAGE_NAME):$(TAG) $(DOCKERHUB_USERNAME)/$(BUILDER_IMAGE_NAME):$(TAG)
-	$(AT)docker run -u $(NON_ROOT_UID):$(NON_ROOT_GID) --name $(BUILDER_CONTAINER_NAME) $(DOCKERHUB_USERNAME)/$(BUILDER_IMAGE_NAME):$(TAG) \
+	$(AT)mkdir -p $(BUILDER_DATA_DIR) \
+		&& docker run -u $(NON_ROOT_UID):$(NON_ROOT_GID) --name $(BUILDER_CONTAINER_NAME) $(DOCKERHUB_USERNAME)/$(BUILDER_IMAGE_NAME):$(TAG) \
 		&& docker cp $(BUILDER_CONTAINER_NAME):/var/data/build/$(REPO_NAME).tar.gz $(BUILDER_DATA_DIR)/$(REPO_NAME)-$(TAG).tar.gz \
 		&& curl -T $(BUILDER_DATA_DIR)/$(REPO_NAME)-$(TAG).tar.gz -u$(BINTRAY_USERNAME):$(BINTRAY_API_KEY) $(BINTRAY_API_URL)/content/$(BINTRAY_USERNAME)/$(BINTRAY_REPO_NAME)/$(REPO_NAME)/$(TAG)/
 	$(AT)git tag $(TAG) -am "Version:$(TAG),User:$(USER),Time:$(BUILD_TIME)"
