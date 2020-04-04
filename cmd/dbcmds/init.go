@@ -97,6 +97,9 @@ select pg_terminate_backend(<pid>);
 use information_schema;
 select name, subsystem, count, type, comment from INNODB_METRICS where status = 'enabled';
 
+# In mysql to show global timeout variables
+show global variables like '%timeout%';
+
 # In mysql innodb to show details on columns in a table
 use information_schema;
 select column_name, column_default, is_nullable, data_type, character_maximum_length,column_type, column_key, extra from COLUMNS where table_name = "<table_name>" and table_schema = "<db_name>";
@@ -109,11 +112,34 @@ select * from table_constraints where table_name = "<table_name>" and table_sche
 use information_schema;
 select * from statistics where table_name = "<table_name>" and table_schema = "<db_name>";
 
+# In mysql to get all constraints on table in db referencing other tables
+use information_schema;
+select table_name, column_name, constraint_name, referenced_table_name, referenced_column_name from key_column_usage where table_schema = "<db_name>" and table_name = "<table_name>" and referenced_column_name is not null;
+
+# In mysql get all constraints referencing a particular table in db
+use information_schema;
+select table_name, column_name, constraint_name, referenced_table_name, referenced_column_name from key_column_usage where table_schema = "<db_name>" and referenced_table_name = "<table_name>" and referenced_column_name is not null;
+
+# Disable all table constraints
+alter table mytable nocheck constraint all
+
+# Enable all table constraints
+alter table mytable with check check constraint all
+
+# Disable single constraint
+alter table mytable nocheck constraint myconstraint
+
+# Enable single constraint
+alter table mytable with check check constraint myconstraint
+
 # To run a single command for mysql using the cli
 mycli -h localhost -u <user> -p<password> -e "show processlist;"
 
 # To see processes that are not administrative
 select * from processlist where User not in ('rdsadmin');
+
+# To see processes that are for a specific db
+select * from processlist where db = '<db_name>';
 
 # To see transactions that are creating locks
 select * from innodb_locks;
