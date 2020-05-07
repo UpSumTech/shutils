@@ -148,6 +148,9 @@ select * from innodb_locks where lock_table = <db_name>.<table_name>;
 select innodb_locks.* from innodb_locks join innodb_lock_waits on (innodb_locks.lock_trx_id = innodb_lock_waits.blocking_trx_id);
 select trx_id, trx_requested_lock_id, trx_mysql_thread_id, trx_query from innodb_trx where trx_state = 'lock wait';
 
+# In RDS slave to stop replication
+CALL mysql.rds_stop_replication;
+
 # In RDS to kill a session that is running on a particular thread id
 CALL mysql.rds_kill(<thread_id_from_processlist>);
 
