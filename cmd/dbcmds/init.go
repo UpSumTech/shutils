@@ -148,6 +148,15 @@ select * from innodb_locks where lock_table = <db_name>.<table_name>;
 select innodb_locks.* from innodb_locks join innodb_lock_waits on (innodb_locks.lock_trx_id = innodb_lock_waits.blocking_trx_id);
 select trx_id, trx_requested_lock_id, trx_mysql_thread_id, trx_query from innodb_trx where trx_state = 'lock wait';
 
+# In mysql to see slave status on a replica
+show slave status;
+# In mysql rds master to add a replication user
+grant replication slave, replication client on *.* to <replication_user>@'%';
+# In mysql if slave (say an on-prem DB which is the slave) is configured properly to replicate through it my.cnf, then add the settings to replicate
+CHANGE MASTER TO MASTER_HOST='<rds-endpoint>',MASTER_USER='<replication-user-in-master>',MASTER_PASSWORD='<passwd>',MASTER_LOG_FILE='<bin_log_file_name>',MASTER_LOG_POS=<bin_log_file_position>
+# In mysql (on the on-prem DB) to start replication in a replica
+start slave;
+
 # In RDS slave to stop replication
 CALL mysql.rds_stop_replication;
 
