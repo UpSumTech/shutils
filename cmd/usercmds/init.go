@@ -45,6 +45,9 @@ getent passwd # To list all users in /etc/passwd
 # To get all login users
 uid_min=$(grep "^UID_MIN" /etc/login.defs)
 awk -F':' -v "limit=${uid_min##UID_MIN}" '{ if ( $3 >= limit ) print $1}' /etc/passwd
+
+# To get the home directory of user foo
+getent passwd foo | cut -d: -f6
 			`)
 		},
 	}
