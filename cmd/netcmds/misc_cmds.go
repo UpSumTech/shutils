@@ -137,6 +137,10 @@ tcpdump -tttt -s0 -c 10 -xx -XX net 172.31.0.0/16
 # Copied from stack overflow - displays headers and packets in a better format for easier visualization
 tcpdump -A -s 10240 'tcp port 8080 and (((ip[2:2] - ((ip[0]&0xf)<<2)) - ((tcp[12]&0xf0)>>2)) != 0)' | egrep --line-buffered "^........(GET |HTTP\/|POST |HEAD )|^[A-Za-z0-9-]+: " | sed -r 's/^........(GET |HTTP\/|POST |HEAD )/\n\1/g'>>))))'
 
+######### tcpdump commands #########
+# Capture traffic on ssh port and print them to the console
+tcpflow -p -c -i eth0 port 22
+
 ######### wireshark filter commands ##########
 
 # Find all packets with src and dest ips or CIDRs
