@@ -112,9 +112,27 @@ ufw allow 22 # Allow ssh port if firewall is there
 ufw deny 22 # Deny ssh port if firewall is there
 
 ######### tcpdump commands #########
+# Get all https traffic without converting addresses to names with hex output
+tcpdump -nnSX port 443
 
-tcpdump -vvv -i any -s0 -A -w <file_name>.dump
-tcpdump 'host (182.101.17.43 or 182.101.17.42) and port 80' -i eth0 -s0
+# Get traffic going to or from a particular host
+tcpdump host 1.1.1.1
+
+# Filter traffic by source or destination
+tcpdump src 1.1.1.1
+tcpdump dst 1.0.0.1
+
+# Find packets going to/from a particular network
+tcpdump net 172.31.0.0/16
+
+# Verbose and human readable timestamp on any interface and all packets
+tcpdump -vvv -tttt -i any -s0 -A -w <file_name>.dump
+
+# Human readable timestamp on eth0 interface and for a set of hosts on http port
+tcpdump -tttt 'host (182.101.17.43 or 182.101.17.42) and port 80' -i eth0 -s0
+
+# Human readable timestamp for a particular network and with detailed hex output and only 10 packets
+tcpdump -tttt -s0 -c 10 -xx -XX net 172.31.0.0/16
 
 ######### wireshark filter commands ##########
 

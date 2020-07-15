@@ -33,6 +33,8 @@ lsblk -f # Display block storage devices as a tree view. Should list the same pa
 mount | column -t # Get all mounted filesystems
 cat /etc/fstab # Get the static file system info
 free -m # Get free memory statistics for the system
+cat /etc/fstab # Get the information on mounted volumes
+file -s /dev/xvda # Check whether the mounted device has any data or not
 			`)
 		},
 	}
