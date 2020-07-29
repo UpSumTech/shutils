@@ -20,6 +20,9 @@ shutils docker debug
 # Get the host pid of the running container
 docker inspect <container_id> -f "{{.State.Pid}}"
 
+# Get docker event stream
+docker events --since '2020-07-28T22:30:00' --until '2020-07-28T23:00:00'
+
 # Get all the env vars inside the container process namespace
 cat /proc/<container_pid_on_host>/environ | sed -E 's#([A-Z_0-9]*)=([\s]*)#\n\1=\2#g'; echo
 cat /proc/<container_pid_on_host>/cmdline | strings | xargs # regen the exact cmd that was used to run the container
