@@ -8,9 +8,9 @@
   branch = "master"
   name = "github.com/nanobox-io/golang-scribble"
 
-[[ constraint ]]
-  branch = "master"
-  name = "github.com/davecgh/go-spew"
+# [[ constraint ]]
+  # branch = "master"
+  # name = "github.com/davecgh/go-spew"
 
 # [[ constraint ]]
   # branch = "master"
