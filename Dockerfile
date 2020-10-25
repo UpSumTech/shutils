@@ -3,6 +3,7 @@ LABEL git_tag="$GIT_TAG" \
   build_time="$BUILD_TIME" \
   git_ref="$GIT_REF" \
   github_user="$GITHUB_USERNAME" \
+  github_organization="$GITHUB_ORGANIZATION" \
   build_user="$BUILD_USER" \
   repo_name="$REPO_NAME"
 

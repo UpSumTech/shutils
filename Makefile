@@ -45,10 +45,10 @@ REPO_NAME := $(shell basename $(ROOT_DIR))
 THIS_FILE := $(lastword $(MAKEFILE_LIST))
 WIP := 0
 HOTFIX := 0
-BINTRAY_API_URL="https://api.bintray.com"
+BINTRAY_API_URL=https://api.bintray.com
 
 ifdef DEPLOY_GITHUB_TOKEN
-	GIT_REPO_URL := https://$(DEPLOY_GITHUB_TOKEN)@github.com/$(GITHUB_USERNAME)/$(REPO_NAME).git
+	GIT_REPO_URL := https://$(DEPLOY_GITHUB_TOKEN)@github.com/$(GITHUB_ORGANIZATION)/$(REPO_NAME).git
 else
 	$(error "ERROR : Please export DEPLOY_GITHUB_TOKEN to your shell")
 endif
@@ -131,6 +131,7 @@ ifeq ($(IS_TAG_FROM_CLI), 0)
 		&& docker build \
 			--no-cache \
 			--build-arg GITHUB_USERNAME=$(GITHUB_USERNAME) \
+			--build-arg GITHUB_ORGANIZATION=$(GITHUB_ORGANIZATION) \
 			--build-arg GIT_TAG=$(TAG) \
 			--build-arg BUILD_TIME=$(BUILD_TIME) \
 			--build-arg GIT_REF="$(GIT_REPO_URL)#$(GIT_SHA)" \
@@ -141,13 +142,13 @@ ifeq ($(IS_TAG_FROM_CLI), 0)
 			--build-arg NON_ROOT_USER=default \
 			-f Dockerfile \
 			-t $(BUILDER_IMAGE_NAME):$(TAG) .
-	$(AT)docker tag $(BUILDER_IMAGE_NAME):$(TAG) $(DOCKERHUB_USERNAME)/$(BUILDER_IMAGE_NAME):$(TAG)
+	$(AT)docker tag $(BUILDER_IMAGE_NAME):$(TAG) $(DOCKERHUB_ORGANIZATION)/$(BUILDER_IMAGE_NAME):$(TAG)
 	$(AT)mkdir -p $(BUILDER_DATA_DIR) \
-		&& docker run -u $(NON_ROOT_UID):$(NON_ROOT_GID) --name $(BUILDER_CONTAINER_NAME) $(DOCKERHUB_USERNAME)/$(BUILDER_IMAGE_NAME):$(TAG) \
+		&& docker run -u $(NON_ROOT_UID):$(NON_ROOT_GID) --name $(BUILDER_CONTAINER_NAME) $(DOCKERHUB_ORGANIZATION)/$(BUILDER_IMAGE_NAME):$(TAG) \
 		&& docker cp $(BUILDER_CONTAINER_NAME):/var/data/build/$(REPO_NAME).tar.gz $(BUILDER_DATA_DIR)/$(REPO_NAME)-$(TAG).tar.gz \
-		&& curl -T $(BUILDER_DATA_DIR)/$(REPO_NAME)-$(TAG).tar.gz -u$(BINTRAY_USERNAME):$(BINTRAY_API_KEY) $(BINTRAY_API_URL)/content/$(BINTRAY_USERNAME)/$(BINTRAY_REPO_NAME)/$(REPO_NAME)/$(TAG)/
+		&& curl -T $(BUILDER_DATA_DIR)/$(REPO_NAME)-$(TAG).tar.gz -u$(BINTRAY_USERNAME):$(BINTRAY_API_KEY) $(BINTRAY_API_URL)/content/$(BINTRAY_ORGANIZATION)/$(BINTRAY_REPO_NAME)/$(REPO_NAME)/$(TAG)/
 	$(AT)git tag $(TAG) -am "Version:$(TAG),User:$(USER),Time:$(BUILD_TIME)"
-	$(info [INFO] --- Created annotated semver tag marking commit sha as a release candidate)
+	$(info [INFO] --- Create annotated semver tag marking commit sha as a release candidate)
 else
 	$(info [INFO] --- Skipping building and tagging container from commit sha)
 	$(info [INFO] --- Skipping tagging git commit sha)
@@ -162,10 +163,10 @@ endif
 # Pushes the git tag
 release: build
 	$(info [INFO] --- Create release candidate)
-	$(AT)curl -X POST -u$(BINTRAY_USERNAME):$(BINTRAY_API_KEY) $(BINTRAY_API_URL)/content/$(BINTRAY_USERNAME)/$(BINTRAY_REPO_NAME)/$(REPO_NAME)/$(TAG)/publish
+	$(AT)curl -X POST -u$(BINTRAY_USERNAME):$(BINTRAY_API_KEY) $(BINTRAY_API_URL)/content/$(BINTRAY_ORGANIZATION)/$(BINTRAY_REPO_NAME)/$(REPO_NAME)/$(TAG)/publish
 	$(AT)docker stop $(BUILDER_CONTAINER_NAME)
 	$(AT)docker rm $(BUILDER_CONTAINER_NAME)
-	$(AT)docker push $(DOCKERHUB_USERNAME)/$(BUILDER_IMAGE_NAME):$(TAG)
+	$(AT)docker push $(DOCKERHUB_ORGANIZATION)/$(BUILDER_IMAGE_NAME):$(TAG)
 	$(AT)git push origin $(TAG)
 ifeq ($(MAKECMDGOALS),release)
 	rm -rf $(TMPDIR_FOR_BUILD)
@@ -234,21 +235,23 @@ check_deps:
 checks_for_env_vars :
 	$(info [INFO] --- Checks that required env vars are present)
 	$(AT)test ! -z "$$GITHUB_USERNAME" \
-	&& test ! -z "$$DOCKERHUB_USERNAME" \
+	&& test ! -z "$$GITHUB_ORGANIZATION" \
+	&& test ! -z "$$DOCKERHUB_ORGANIZATION" \
 	&& test ! -z "$$BINTRAY_USERNAME" \
+	&& test ! -z "$$BINTRAY_ORGANIZATION" \
 	&& test ! -z "$$BINTRAY_REPO_NAME" \
 	&& test ! -z "$$BINTRAY_API_KEY"
 
 # Checks that bintray repo is present
 checks_bintray_repo :
 	$(info [INFO] --- Checks that bintray repo is present)
-	$(AT)! curl -u$(BINTRAY_USERNAME):$(BINTRAY_API_KEY) $(BINTRAY_API_URL)/repos/$(BINTRAY_USERNAME)/$(BINTRAY_REPO_NAME) | grep -i 'was not found'
+	$(AT)! curl -u$(BINTRAY_USERNAME):$(BINTRAY_API_KEY) $(BINTRAY_API_URL)/repos/$(BINTRAY_ORGANIZATION)/$(BINTRAY_REPO_NAME) | grep -i 'was not found'
 
 # Checks that bintray package is present or create one
 checks_or_makes_bintray_package :
 	$(info [INFO] --- Checks that bintray repo is present)
-	$(AT)! curl -u$(BINTRAY_USERNAME):$(BINTRAY_API_KEY) $(BINTRAY_API_URL)/packages/$(BINTRAY_USERNAME)/$(BINTRAY_REPO_NAME)/$(REPO_NAME) | grep -i 'was not found' \
-	|| curl -X POST -u$(BINTRAY_USERNAME):$(BINTRAY_API_KEY) -H "Content-Type: application/json" -H "Accept: application/json" -d '{"name": "$(REPO_NAME)", "licenses": ["MIT"], "vcs_url": "https://github.com/$(GITHUB_USERNAME)/$(REPO_NAME).git"}' $(BINTRAY_API_URL)/packages/$(BINTRAY_USERNAME)/$(BINTRAY_REPO_NAME)
+	$(AT)! curl -u$(BINTRAY_USERNAME):$(BINTRAY_API_KEY) $(BINTRAY_API_URL)/packages/$(BINTRAY_ORGANIZATION)/$(BINTRAY_REPO_NAME)/$(REPO_NAME) | grep -i 'was not found' \
+	|| curl -X POST -u$(BINTRAY_USERNAME):$(BINTRAY_API_KEY) -H "Content-Type: application/json" -H "Accept: application/json" -d '{"name": "$(REPO_NAME)", "licenses": ["MIT"], "vcs_url": "https://github.com/$(GITHUB_USERNAME)/$(REPO_NAME).git"}' $(BINTRAY_API_URL)/packages/$(BINTRAY_ORGANIZATION)/$(BINTRAY_REPO_NAME)
 
 # Checks is HEAD is detached
 # Checks if there are uncommited changes
@@ -344,4 +347,3 @@ $(DEPS_STATEFILE) :
 	$(info [INFO] --- Installs the dependencies to run the make targets)
 	$(AT)mkdir -p .make
 	$(AT)touch $(DEPS_STATEFILE)
-
