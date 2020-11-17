@@ -24,6 +24,9 @@ func Init() *cobra.Command {
 		TraverseChildren: true,
 		Run: func(cmd *cobra.Command, args []string) {
 			fmt.Println(`
+#######################################################
+################### Postgres commands #################
+#######################################################
 export PGPASSWORD=<password>
 psql -h <postgres_host> -p 5439 -U <user> -d <db_name> -c "ALTER TABLE <table_name> ADD COLUMN <col_name> NUMERIC(10,6) ENCODING runlength DEFAULT 0.0 NOT NULL"
 psql -h <postgres_host> -p 5439 -U <user> -d <db_name> -a -w -f up_impression_agg_facts.sql
@@ -32,7 +35,6 @@ psql -h <postgres_host> -p 5439 -U <user> -d <db_name> -a -w -f up_impression_ag
 ssh -f -L <high_localhost_port>:<database_server_host>:<database_server_port> user@proxy_server -N
 pgcli -h localhost -p high_localhost_port -U database_user database_name
 
-###################### Postgres commands #####################
 # Get all DB parameters in postgres
 select name, setting, boot_val, reset_val, unit from pg_settings order by name;
 
@@ -92,7 +94,14 @@ select * from pg_namespace where nspname = '<your pg namespace>';
 # To kill a postgres RDS backend proc
 select pg_terminate_backend(<pid>);
 
+
+
+
+
+
+#######################################################
 ###################### MYSQL ##########################
+#######################################################
 # In mysql innodb to show metrics and stats
 use information_schema;
 select name, subsystem, count, type, comment from INNODB_METRICS where status = 'enabled';
@@ -134,6 +143,7 @@ alter table mytable with check check constraint myconstraint
 
 # To run a single command for mysql using the cli
 mycli -h localhost -u <user> -p<password> -e "show processlist;"
+mycli -h localhost -u <root_user> -p<root_password> -e "show full processlist;"
 
 # To see processes that are not administrative
 select * from processlist where User not in ('rdsadmin');
@@ -142,17 +152,27 @@ select * from processlist where User not in ('rdsadmin');
 select * from processlist where db = '<db_name>';
 
 # To see transactions that are creating locks
+use information_schema;
+select * from innodb_trx;
 select * from innodb_locks;
 select * from innodb_lock_waits;
 select * from innodb_locks where lock_table = <db_name>.<table_name>;
 select innodb_locks.* from innodb_locks join innodb_lock_waits on (innodb_locks.lock_trx_id = innodb_lock_waits.blocking_trx_id);
 select trx_id, trx_requested_lock_id, trx_mysql_thread_id, trx_query from innodb_trx where trx_state = 'lock wait';
+# To see which transactions are waiting and which transactions are blocking the waiting transactions
+select r.trx_id waiting_trx_id, r.trx_mysql_thread_id waiting_thread, r.trx_query waiting_query, b.trx_id blocking_trx_id, b.trx_mysql_thread_id blocking_thread, b.trx_query blocking_query from innodb_lock_waits w inner join innodb_trx b on b.trx_id = w.blocking_trx_id inner join innodb_trx r on r.trx_id = w.requesting_trx_id;
+
+# To troubleshoot replication lag and compare master log file and replicas log files - especially file processed by IO_THREAD and file processed by SQL_THREAD
+# Run this in the master instance
+show master status;
+# Run this in the slave instance
+show slave status;
 
 # In mysql to see slave status on a replica
 show slave status;
 # In mysql rds master to add a replication user
 grant replication slave, replication client on *.* to <replication_user>@'%';
-# In mysql if slave (say an on-prem DB which is the slave) is configured properly to replicate through it my.cnf, then add the settings to replicate
+# In mysql if slave (say an on-prem DB which is the slave) is configured properly to replicate through it's my.cnf, then add the settings to replicate
 CHANGE MASTER TO MASTER_HOST='<rds-endpoint>',MASTER_USER='<replication-user-in-master>',MASTER_PASSWORD='<passwd>',MASTER_LOG_FILE='<bin_log_file_name>',MASTER_LOG_POS=<bin_log_file_position>
 # In mysql (on the on-prem DB) to start replication in a replica
 start slave;
