@@ -108,6 +108,7 @@ select name, subsystem, count, type, comment from INNODB_METRICS where status = 
 
 # In mysql to show global timeout variables
 show global variables like '%timeout%';
+show global variables like 'performance_schema';
 
 # In mysql innodb to show details on columns in a table
 use information_schema;

@@ -41,12 +41,49 @@
   revision = "298182f68c66c05229eb03ac171abe6e309ee79a"
   version = "v1.0.3"
 
+[[projects]]
+  digest = "1:fa9d797638e485f412e400310e42deff2436d486973d3fcc8bc4674b0d2bc67f"
+  name = "github.com/sumanmukherjee03/shutils"
+  packages = [
+    "cmd/dbcmds",
+    "cmd/diskcmds",
+    "cmd/dockercmds",
+    "cmd/ec2cmds",
+    "cmd/filecmds",
+    "cmd/kubecmds",
+    "cmd/misccmds",
+    "cmd/netcmds",
+    "cmd/pkgcmds",
+    "cmd/proccmds",
+    "cmd/rabbitmqcmds",
+    "cmd/seccmds",
+    "cmd/syshealthcmds",
+    "cmd/usercmds",
+  ]
+  pruneopts = "UT"
+  revision = "d2ab578ddf6c1839027f739899d3d5edeaf82348"
+  version = "v2.0.0"
+
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
     "github.com/nanobox-io/golang-scribble",
     "github.com/spf13/cobra",
+    "github.com/sumanmukherjee03/shutils/cmd/dbcmds",
+    "github.com/sumanmukherjee03/shutils/cmd/diskcmds",
+    "github.com/sumanmukherjee03/shutils/cmd/dockercmds",
+    "github.com/sumanmukherjee03/shutils/cmd/ec2cmds",
+    "github.com/sumanmukherjee03/shutils/cmd/filecmds",
+    "github.com/sumanmukherjee03/shutils/cmd/kubecmds",
+    "github.com/sumanmukherjee03/shutils/cmd/misccmds",
+    "github.com/sumanmukherjee03/shutils/cmd/netcmds",
+    "github.com/sumanmukherjee03/shutils/cmd/pkgcmds",
+    "github.com/sumanmukherjee03/shutils/cmd/proccmds",
+    "github.com/sumanmukherjee03/shutils/cmd/rabbitmqcmds",
+    "github.com/sumanmukherjee03/shutils/cmd/seccmds",
+    "github.com/sumanmukherjee03/shutils/cmd/syshealthcmds",
+    "github.com/sumanmukherjee03/shutils/cmd/usercmds",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1
