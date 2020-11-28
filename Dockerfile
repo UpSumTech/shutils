@@ -1,4 +1,4 @@
-FROM sumanmukherjee03/golang:onbuild-1.11.0
+FROM sumanmukherjee03/golang:onbuild-1.14.0
 LABEL git_tag="$GIT_TAG" \
   build_time="$BUILD_TIME" \
   git_ref="$GIT_REF" \
