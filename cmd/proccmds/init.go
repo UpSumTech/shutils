@@ -91,6 +91,12 @@ screen -XS "<screen-session-name>" quit
 sudo su -l root -c "screen -S <screen-session-name> -dm bash -c \"tcpdump -vvv -i any -s0 -A -w nginx.dump\""
 
 service --status-all # List all services on an ubuntu box
+
+# To find the path of coredumps
+cat /proc/sys/kernel/core_pattern
+# To generate a coredump file for testing try this
+ulimit -c unlimited
+kill -s SIGSEGV $$
 			`)
 		},
 	}

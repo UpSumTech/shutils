@@ -55,6 +55,45 @@ kubectl get pod nginx-pod-1 --as=dev@example.com --as-group=FrontEnd
 
 # To find out which k8s services are using external load balancers
 kubectl get services -o custom-columns=:.metadata.name --no-headers | grep -v kubernetes | xargs -n 1 -I % /bin/bash -c "echo -n %; echo -n ' '; kubectl get service % -o jsonpath='{ ..hostname }'; echo" | tee | column -t -s ' '
+
+# Some useful helm commands
+helm plugin install <git_repo_url>
+helm plugin list
+helm plugin uninstall <plugin_name_from_list>
+
+helm diff upgrade my-release stable/postgresql --values values.yaml
+helm diff release my-prod my-stage
+helm diff revision my-release 2 3
+helm diff rollback my-release 2
+
+helm env --vars-only
+
+helm get $(helm last)
+
+helm nuke
+
+helm repo add cert-manager git+https://github.com/jetstack/cert-manager@deploy/charts?ref=v0.6.2
+helm search cert-manager
+helm install cert-manager/cert-manager --version "0.6.6"
+helm fetch cert-manager/cert-manager --version "0.6.6"
+helm install . -f git+https://github.com/aslafy-z/helm-git@tests/fixtures/example-chart/values.yaml
+
+kubeval my-invalid-rc.yaml
+kubeval --strict additional-properties.yaml
+cat my-invalid-rc.yaml | kubeval
+kubeval fixtures/invalid.yaml -o json
+
+helm kubeval charts/stable/nginx-ingress
+helm kubeval . -v 1.9.0
+helm kubeval charts/stable/nginx-ingress --set controller.image.tag=latest
+
+helm schema-gen values.yaml
+
+helmsman -f example.toml
+helmsman --apply -f example.toml
+helmsman --debug --apply -f example.toml
+helmsman --debug --dry-run -f example.toml
+helmsman --debug --dry-run --target artifactory -f example.toml
 			`)
 		},
 	}
