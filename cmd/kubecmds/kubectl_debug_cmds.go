@@ -94,6 +94,10 @@ helmsman --apply -f example.toml
 helmsman --debug --apply -f example.toml
 helmsman --debug --dry-run -f example.toml
 helmsman --debug --dry-run --target artifactory -f example.toml
+
+helm version
+helm ls
+helm create api-server
 			`)
 		},
 	}
