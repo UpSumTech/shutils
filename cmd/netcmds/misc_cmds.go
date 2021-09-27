@@ -81,6 +81,9 @@ ssh -A -J jump.example.com -i ~/.ssh/priv_key_for_jumphost.pem ubuntu@dev.exampl
 ssh -f -L <high_localhost_port>:localhost:<servers_blocked_port> user@proxy_server -N
 nc -z localhost <high_localhost_port> # To verify that the tunnel is working
 
+# To get the server fingerprint or public keys for adding to the known_hosts file of a client
+ssh-keyscan -H gitlab.com
+
 # Removes all keys belonging to a hostname from known_hosts
 ssh-keygen -R <hostname>
 
