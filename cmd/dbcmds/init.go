@@ -130,6 +130,10 @@ select table_name, column_name, constraint_name, referenced_table_name, referenc
 use information_schema;
 select table_name, column_name, constraint_name, referenced_table_name, referenced_column_name from key_column_usage where table_schema = "<db_name>" and referenced_table_name = "<table_name>" and referenced_column_name is not null;
 
+# In mysql get tables affected by on delete cascade
+use information_schema;
+select table_name from referential_constraints where constraint_schema = '<db_name>' and referenced_table_name = '<table_name_where_clause_applied>' and delete_rule = 'cascade';
+
 # Disable all table constraints
 alter table mytable nocheck constraint all
 

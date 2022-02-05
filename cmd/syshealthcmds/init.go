@@ -43,7 +43,7 @@ journalctl -u ssh -f # To follow ssh logs
 journalctl --since "2019-01-30 12:30:00" --until "2019-01-30 14:30:00" -u ssh # Show ssh logs for that period
 
 ######## Taking a heapdump for a running java service ########
-export pid_of_java_process="$(jcmd -l | grep -i app.jar | awk '{print $1}')"
+export pid_of_java_process="$(jcmd -l | grep -i <name_of_jar_file>.jar | awk '{print $1}')"
 jmap -dump:live,file=heapdump.hprof <pid_of_java_process> # Dump live objects only
 jmap -dump:format=b,file=heapdump.hprof <pid_of_java_process> # Dump for 32 bit jvm
 jmap -J-d64 -dump:format=b,file=heapdump.hprof <pid_of_java_process> # Dump for 64 bit jvm
