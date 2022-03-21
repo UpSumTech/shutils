@@ -31,6 +31,7 @@ dig @8.8.8.8 rainandrhyme.com # get DNS records using a google server
 dig +noall +answer @8.8.8.8 rainandrhyme.com # only get the answer to the DNS resolution and not the query parts
 dig +trace @8.8.8.8 rainandrhyme.com # trace recursively how the DNS is getting resolved
 dig @localhost rainandrhyme.com # get DNS records using the local DNS server you are running something like dnsmasq
+dig +nocmd +noall +answer A foo.bar.com
 getent hosts rainandrhyme.com # check if you have a DNS entry in your hosts file
 
 arp -a # ARP of router
@@ -147,7 +148,7 @@ tcpdump -A -s 10240 'tcp port 8080 and (((ip[2:2] - ((ip[0]&0xf)<<2)) - ((tcp[12
 # Capture traffic on ssh port and print them to the console
 tcpflow -p -c -i eth0 port 22
 
-######### wireshark filter commands ##########
+######### WIRESHARK filter commands ##########
 
 # Find all packets with src and dest ips or CIDRs
 (ip.dst==52.7.68.129 || ip.dst==52.203.198.115) && (ip.src==172.17.0.0/16)

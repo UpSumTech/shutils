@@ -8,14 +8,15 @@ import (
 	"github.com/sumanmukherjee03/shutils/cmd/ec2cmds"
 	"github.com/sumanmukherjee03/shutils/cmd/filecmds"
 	"github.com/sumanmukherjee03/shutils/cmd/kubecmds"
+	"github.com/sumanmukherjee03/shutils/cmd/memcmds"
 	"github.com/sumanmukherjee03/shutils/cmd/misccmds"
 	"github.com/sumanmukherjee03/shutils/cmd/netcmds"
 	"github.com/sumanmukherjee03/shutils/cmd/pkgcmds"
 	"github.com/sumanmukherjee03/shutils/cmd/proccmds"
+	"github.com/sumanmukherjee03/shutils/cmd/rabbitmqcmds"
 	"github.com/sumanmukherjee03/shutils/cmd/seccmds"
 	"github.com/sumanmukherjee03/shutils/cmd/syshealthcmds"
 	"github.com/sumanmukherjee03/shutils/cmd/usercmds"
-	"github.com/sumanmukherjee03/shutils/cmd/rabbitmqcmds"
 )
 
 var (
@@ -46,5 +47,6 @@ func main() {
 	rootCmd.AddCommand(ec2cmds.Init())
 	rootCmd.AddCommand(misccmds.Init())
 	rootCmd.AddCommand(rabbitmqcmds.Init())
+	rootCmd.AddCommand(memcmds.Init())
 	rootCmd.Execute()
 }
