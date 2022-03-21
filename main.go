@@ -1,21 +1,22 @@
 package main
 
 import (
-	"github.com/UpSumTech/shutils/cmd/dbcmds"
-	"github.com/UpSumTech/shutils/cmd/diskcmds"
-	"github.com/UpSumTech/shutils/cmd/dockercmds"
-	"github.com/UpSumTech/shutils/cmd/ec2cmds"
-	"github.com/UpSumTech/shutils/cmd/filecmds"
-	"github.com/UpSumTech/shutils/cmd/kubecmds"
-	"github.com/UpSumTech/shutils/cmd/memcmds"
-	"github.com/UpSumTech/shutils/cmd/misccmds"
-	"github.com/UpSumTech/shutils/cmd/netcmds"
-	"github.com/UpSumTech/shutils/cmd/pkgcmds"
-	"github.com/UpSumTech/shutils/cmd/proccmds"
-	"github.com/UpSumTech/shutils/cmd/rabbitmqcmds"
-	"github.com/UpSumTech/shutils/cmd/seccmds"
-	"github.com/UpSumTech/shutils/cmd/syshealthcmds"
-	"github.com/UpSumTech/shutils/cmd/usercmds"
+	"shutils/cmd/dbcmds"
+	"shutils/cmd/diskcmds"
+	"shutils/cmd/dockercmds"
+	"shutils/cmd/ec2cmds"
+	"shutils/cmd/filecmds"
+	"shutils/cmd/kubecmds"
+	"shutils/cmd/memcmds"
+	"shutils/cmd/misccmds"
+	"shutils/cmd/netcmds"
+	"shutils/cmd/pkgcmds"
+	"shutils/cmd/proccmds"
+	"shutils/cmd/rabbitmqcmds"
+	"shutils/cmd/seccmds"
+	"shutils/cmd/syshealthcmds"
+	"shutils/cmd/usercmds"
+
 	"github.com/spf13/cobra"
 )
 
