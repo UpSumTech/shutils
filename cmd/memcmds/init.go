@@ -10,7 +10,7 @@ var (
 	parseShortDesc = `Prints examples of commands to operate on memory`
 	parseLongDesc  = `Prints examples of commands to operate on memory`
 	parseExample   = `
-	### Available commands for operating on memory of a machine
+	### Available commands for memcmds
 	shutils mem`
 )
 

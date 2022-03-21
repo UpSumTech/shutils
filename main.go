@@ -1,22 +1,22 @@
 package main
 
 import (
+	"github.com/UpSumTech/shutils/cmd/dbcmds"
+	"github.com/UpSumTech/shutils/cmd/diskcmds"
+	"github.com/UpSumTech/shutils/cmd/dockercmds"
+	"github.com/UpSumTech/shutils/cmd/ec2cmds"
+	"github.com/UpSumTech/shutils/cmd/filecmds"
+	"github.com/UpSumTech/shutils/cmd/kubecmds"
+	"github.com/UpSumTech/shutils/cmd/memcmds"
+	"github.com/UpSumTech/shutils/cmd/misccmds"
+	"github.com/UpSumTech/shutils/cmd/netcmds"
+	"github.com/UpSumTech/shutils/cmd/pkgcmds"
+	"github.com/UpSumTech/shutils/cmd/proccmds"
+	"github.com/UpSumTech/shutils/cmd/rabbitmqcmds"
+	"github.com/UpSumTech/shutils/cmd/seccmds"
+	"github.com/UpSumTech/shutils/cmd/syshealthcmds"
+	"github.com/UpSumTech/shutils/cmd/usercmds"
 	"github.com/spf13/cobra"
-	"github.com/sumanmukherjee03/shutils/cmd/dbcmds"
-	"github.com/sumanmukherjee03/shutils/cmd/diskcmds"
-	"github.com/sumanmukherjee03/shutils/cmd/dockercmds"
-	"github.com/sumanmukherjee03/shutils/cmd/ec2cmds"
-	"github.com/sumanmukherjee03/shutils/cmd/filecmds"
-	"github.com/sumanmukherjee03/shutils/cmd/kubecmds"
-	"github.com/sumanmukherjee03/shutils/cmd/memcmds"
-	"github.com/sumanmukherjee03/shutils/cmd/misccmds"
-	"github.com/sumanmukherjee03/shutils/cmd/netcmds"
-	"github.com/sumanmukherjee03/shutils/cmd/pkgcmds"
-	"github.com/sumanmukherjee03/shutils/cmd/proccmds"
-	"github.com/sumanmukherjee03/shutils/cmd/rabbitmqcmds"
-	"github.com/sumanmukherjee03/shutils/cmd/seccmds"
-	"github.com/sumanmukherjee03/shutils/cmd/syshealthcmds"
-	"github.com/sumanmukherjee03/shutils/cmd/usercmds"
 )
 
 var (
