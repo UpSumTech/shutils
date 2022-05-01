@@ -27,7 +27,8 @@ func Init() *cobra.Command {
 # To get the basic idea of how processes are using memory you can use ps.
 # If the RSS of a process is growing it is generally indicative of some sort of a memory issue.
 # VSZ/VIRT is virtual memory and represents the total memory mapped by a proc. This number is not of much interest.
-# RSS/RES is physical memory and represents the total physical memory used by a proc. This number is of more interest. Although remember that this includes memory pages shared with other procs.
+# RSS/RES is physical memory (OR referred to as Resident memory) and represents the total physical memory used by a proc.
+# This number is of more interest. Although remember that this includes memory pages shared with other procs.
 ps -eo pid,tid,class,rtprio,stat,vsz,rss,comm
 
 # Recursively search the logs to find out if anything encountered an OOM error.

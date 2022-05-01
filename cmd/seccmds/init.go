@@ -61,7 +61,7 @@ openssl req -key example.key -new -x509 -days 365 -out exmaple.crt
 # openssl create self signed cert from existing private key and CSR
 openssl x509 -signkey example.key -in example.csr -req -days 365 -out example.crt
 
-# check ssl connextion with debug info
+# check ssl connection with debug info
 openssl s_client -debug -msg -connect example.com:80
 # check cert expiry date for cert
 openssl x509 -enddate -noout -in cert.pem
