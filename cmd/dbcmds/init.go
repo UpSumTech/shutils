@@ -59,6 +59,12 @@ select CURRENT_TIME - interval '1 hour';
 select count(*) from <table_name> where created_on > (now()::timestamp without time zone - interval '10 minute');
 select source,name,setting,boot_val,reset_val from pg_settings where name != 'rds.extensions' and boot_val != reset_val order by name;
 
+# check to see if a database is running aws aurora
+select AURORA_VERSION();
+
+# from the WAL log publishing side what is the current replay_lsn
+select * from pg_stat_replication;
+
 # Lookup all replication slots
 select * from pg_replication_slots;
 # Lookup the current checkpoint
@@ -66,6 +72,9 @@ select pg_current_wal_lsn();
 # Lookup the restart_lsn, and confirmed_flush_lsn for the slots
 # lsn is generally like this current > last confirmed flush > last restart checkpoint
 select slot_name, restart_lsn, confirmed_flush_lsn from pg_replication_slots;
+
+# drop a db replication slot if necessary
+select pg_drop_replication_slot('<slotname>');
 
 # To show current activity in a postgres database
 select * from pg_stat_activity;
