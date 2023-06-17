@@ -26,12 +26,11 @@ docker events --since '2020-07-28T22:30:00' --until '2020-07-28T23:00:00'
 # Get all the env vars inside the container process namespace
 cat /proc/<container_pid_on_host>/environ | sed -E 's#([A-Z_0-9]*)=([\s]*)#\n\1=\2#g'; echo
 cat /proc/<container_pid_on_host>/cmdline | strings | xargs # regen the exact cmd that was used to run the container
+# Get container process status
+cat /proc/<container_pid_on_host>/status
 
 # Get the inodes of the different namespaces the container is in
 ls -lah /proc/<container_pid_on_host>/ns
-
-# Get container process status
-cat /proc/<container_pid_on_host>/status
 
 # Outbound connections in container network namespace
 nsenter -t <container_pid_on_host> -n netstat -pte -W --numeric-ports
@@ -53,6 +52,15 @@ nsenter -t <container_pid_on_host> -n tcpdump -i eth0 -A -s0
 
 # tcpdump inside the containers network namespace for all incoming/outgoing traffic to mysql instance
 nsenter -t <container_pid_on_host> tcpdump -i eth0 -A any host <mysql_host_or_ip> and port 3306
+
+# List all namespaces in a host
+lsns
+
+# if you know the pid of a container in the host then you can get the namespaces associated with it
+lsns --task <pid>
+
+# List all the network namespaces. Valid types are - net|user|pid|cgroup|ipc
+lsns --type net
 			`)
 		},
 	}

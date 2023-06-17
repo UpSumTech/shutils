@@ -28,6 +28,7 @@ errno -l # List of error codes
 errno ENOENT # description of error code from process
 
 ps -auxefw # All processes with process tree
+ps auxww # Get processes with the full command they were invoked as
 ps axww | grep ssh # Look for process
 ps aux | grep ss[h] # Look for processes without the grep pid
 pgrep -a -u root -f ssh # Look for ssh processes owned by root
@@ -35,6 +36,9 @@ ps -fp $(pgrep -u root ssh) # Print full info for processes named ssh and owned 
 ps --sort -rss -eo pid,pcpu,pmem,rss,vsize,size,cmd | head -n 10 # Track process by high memory usage
 ps --sort -pcpu -eo pid,pcpu,pmem,rss,vsize,size,cmd | head -n 10 # Track process by high cpu usage
 ps -A -o 'pid,ppid,stat,time,command' | awk '{if($2 == /Z/) print $0}' # Track zombie processes
+
+# Get the parent pid of a process
+ps -o ppid= -p <pid>
 
 pstree -aclp <pid> # Get an uncompressed version of process tree. Useful for process managers like supervisor
 
