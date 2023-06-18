@@ -37,6 +37,16 @@ ps --sort -rss -eo pid,pcpu,pmem,rss,vsize,size,cmd | head -n 10 # Track process
 ps --sort -pcpu -eo pid,pcpu,pmem,rss,vsize,size,cmd | head -n 10 # Track process by high cpu usage
 ps -A -o 'pid,ppid,stat,time,command' | awk '{if($2 == /Z/) print $0}' # Track zombie processes
 
+# If you have atop installed in the system then you can monitor the system
+# Even when run from inside a container you will get the view of the underlying
+# ec2 instance system it is running on in the pane above - like number of CPUs, total mem etc. Dont confuse it with that of the container.
+atop -a # see active processes
+atop -ac # active processes with the command lines
+atop -m # start showing memory information
+atop -au # show the number of processes per user
+atop -s # show which cpu is processing with command - scheduling information
+atop -v # show process state details
+
 # Get the parent pid of a process
 ps -o ppid= -p <pid>
 

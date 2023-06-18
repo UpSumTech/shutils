@@ -19,6 +19,7 @@ shutils net misc
 		Run: func(cmd *cobra.Command, args []string) {
 			fmt.Println(`
 telnet github.com 22 # try to see if port is accepting connections on remote machine
+nc -zv <service-fqdn> 8080 # To verify that remote service is accepting connections when telnet is not available
 
 # test connectivity without telnet or nc installed
 timeout 1 bash -c '</dev/tcp/google.com/443 && echo Port is open || echo Port is closed' || echo Connection timeout
@@ -61,6 +62,8 @@ netstat -r inet # Route table for DARPA internet address family
 netstat -tup # List currently active connection to the system
 netstat -tupl # List listening ports
 netstat -anp --udp --tcp | grep LISTEN # List listening ports for tcp and udp connections
+netstat -ptuwl --numeric-ports # Get all the inbound connections
+netstat -pte -W --numeric-ports # Get all the outbound connections
 
 ifdata -e eth0; echo $? # Checks existence of interface and prints the exit status
 ifdata -pa eth0 # Network address of interface
@@ -81,10 +84,39 @@ sockstat -cl -U 0 # Get all the connected sockets root is listening to
 iptables -L -t nat # Check the NAT status
 cat /proc/sys/net/ipv4/ip_forward # Check if IP forwarding is on. Useful for NAT instances
 
+# the -q flag is used for quiet output so that you are not flooded with too much data
+ngrep '' udp # print udp packets
+ngrep -q 'HTTP' 'udp' # print packets with header matching the string HTTP sent with UDP
+ngrep -d eth0 port 8080 # print packets for port 8080 on eth0
+ngrep -d any not port 22 # print packets for all traffic except ssh traffic
+ngrep -d eth0 "example-.*.com" port 8080 # search for a string in the packets
+ngrep -d any -i "user|PASS" port 8080 # search for a case insensitive regex in the packets
+ngrep -d any -W byline "<search-string>" port 8080 # use the byline option for more readable input
+ngrep -q 'HTTP' host 10.20.11.15 # print packets with header matching the string HTTP sent to/from the host
+ngrep -q 'HTTP' src host 10.20.21.55 # print packets with header matching the string HTTP sent from the source host
+ngrep -q 'HTTP' dest host 10.20.19.51 # print packets with header matching the string HTTP sent to the destination host
+ngrep -q 'HTTP' dest host 10.20.19.51 # print packets with header matching the string HTTP sent to the destination host
+
+# If you want to capture or read a pcap file then you can use these commands
+# The -t option to ncap captures timestamps. -O is to write, -I is to read.
+ngrep -O network_capture.pcap -qt 'HTTP'
+ngrep -I network_capture.pcap -qt 'HTTP'
+
+# Dont run nmap in aws infra, you will get banned very quickly.
 nmap -T4 -F 198.10.100.0/24 # Scanning a large network for open ports
 nmap -T4 -Pn -F 198.10.100.21 # Checks with ping if host is up. Host could be behind a firewall
 nmap -T4 -Pn -F 198.10.100.21 --traceroute # trace the path to host along with scanning open ports
 nmap -Pn -p 22 198.10.100.21 # Scan port 22 for the given host
+
+# nping is a pretty useful utility to test network connectivity from machines
+# For most of the commands though you will need root privileges
+sudo nping --icmp -c 2  google.com # Can you ping the domain and get back a response for ICMP
+nping --tcp-connect -c 2 -p 80 google.com # can you connect with tcp to a specific port
+sudo nping --tcp -c 2 --flags S -p 80 google.com # you can also send a tcp request with a specific flag like SYN
+sudo nping --udp -c 2 -p 40125 1.1.1.1 # You can try and connect with udp to a server and port
+# You can echo client to nmap.org. They maintain a echo server application.
+# You can use this to check if the is a NAT between you and the internet.
+sudo nping -c 1 --echo-client "public" scanme.nmap.org
 
 # Exec ssh commands on a machine and get it's output
 ssh -o ExitOnForwardFailure=yes foo.example.com -t "ps -elf"
@@ -105,12 +137,12 @@ ssh-keygen -R <hostname>
 # Generate public keypair for a given private key
 ssh-keygen -y -f private.pem
 
-# To send and receive files using nc
-tar cf - * | netcat <ip_of_receiving_host> <port> # Tar and send files to a specific port on another host from a machine
-netcat -l -p <port> | tar x # Untar by listening to a port on the target machine
+# To easily send and receive files using nc
+tar cf - * | nc <ip_of_receiving_host> <port> # Tar and send files to a specific port on another host from a machine
+nc -l -p <port> | tar x # Untar by listening to a port on the target machine
 
 # To send and receive LVM files over the network
-dd if=/dev/mapper/foo bs=4M | netcat <ip_of_receiving_host> <port> # Send block storage files to a specific port on another host from a machine
+dd if=/dev/mapper/foo bs=4M | nc <ip_of_receiving_host> <port> # Send block storage files to a specific port on another host from a machine
 nc -l <port> | dd of=/dev/mapper/foo bs=4M # Receive block storage file on the target machine
 
 # quickly reasoning about CIDRs
@@ -158,7 +190,6 @@ tcpdump -vvvv -tttt -s0 -A -X 'port 80 and dst 172.15.10.207 and (((ip[2:2] - ((
 # Copied from stack overflow - displays headers and packets in a better format for easier visualization
 tcpdump -A -s 10240 'tcp port 8080 and (((ip[2:2] - ((ip[0]&0xf)<<2)) - ((tcp[12]&0xf0)>>2)) != 0)' | egrep --line-buffered "^........(GET |HTTP\/|POST |HEAD )|^[A-Za-z0-9-]+: " | sed -r 's/^........(GET |HTTP\/|POST |HEAD )/\n\1/g'>>))))'
 
-######### tcpdump commands #########
 # Capture traffic on ssh port and print them to the console
 tcpflow -p -c -i eth0 port 22
 
