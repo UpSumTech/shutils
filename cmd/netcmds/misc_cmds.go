@@ -23,9 +23,11 @@ telnet github.com 22 # try to see if port is accepting connections on remote mac
 # test connectivity without telnet or nc installed
 timeout 1 bash -c '</dev/tcp/google.com/443 && echo Port is open || echo Port is closed' || echo Connection timeout
 
+# Find my own public ip
 curl icanhazip.com # find external ip of machine easily
-dig myip.opendns.com # find external ip via DNS query, helps if curl/wget not installed
+dig myip.opendns.com # find external ip via DNS query, helps if curl/wget not working
 
+######### DNS troubleshooting ################
 dig rainandrhyme.com # get DNS records for a domain
 dig @8.8.8.8 rainandrhyme.com # get DNS records using a google server
 dig +noall +answer @8.8.8.8 rainandrhyme.com # only get the answer to the DNS resolution and not the query parts
@@ -33,6 +35,18 @@ dig +trace @8.8.8.8 rainandrhyme.com # trace recursively how the DNS is getting 
 dig @localhost rainandrhyme.com # get DNS records using the local DNS server you are running something like dnsmasq
 dig +nocmd +noall +answer A foo.bar.com
 getent hosts rainandrhyme.com # check if you have a DNS entry in your hosts file
+
+# normal dns query with doggo
+doggo github.com
+doggo MX github.com @9.9.9.9
+doggo MX github.com @tcp://1.1.1.1:53
+# If you want to perform DOT (dns over tls) then use the proper port, ie 853 and mention that in the transport type
+doggo MX github.com @tls://1.1.1.1:853
+# This is an example for DOH(dns over https) dns query for cloudflare DOH server
+doggo archive.org @https://cloudflare-dns.com/dns-query
+doggo archive.org @https://cloudflare-dns.com/dns-query --json
+doggo archive.org @https://cloudflare-dns.com/dns-query --json --debug
+doggo duckduckgo.com --time
 
 arp -a # ARP of router
 arping -I eth0 10.23.11.101 # Ping the device at the ethernet layer
