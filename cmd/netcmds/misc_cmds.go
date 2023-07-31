@@ -147,8 +147,11 @@ nc -l <port> | dd of=/dev/mapper/foo bs=4M # Receive block storage file on the t
 
 # quickly reasoning about CIDRs
 ipcalc 172.16.1.0/24 -s 15 15 # gives you detailed info to partition a network with 2 subnets of size 15 each
-echo "ibase=A;obase=2;248" | bc # quickly does conversions for you to understand network and host bits faster
-echo "ibase=2;obase=A;11111000" | bc # quickly convert binary to decimal. Again, easy to convert CIDR to decimal
+echo "ibase=A;obase=2;248" | bc # quickly does conversions for you to understand network and host bits faster. This one is for decimal to binary.
+echo "ibase=2;obase=A;11111000" | bc # quickly convert binary to decimal. Again, easy to convert CIDR to decimal.
+prips 10.20.10.0/24 # Print out all the ip addresses in a network range
+# This command below is very useful to quickly scan the network in a CIDR range
+prips 130.229.16.0/20 | parallel --timeout 2 -j0 'ping -c 1 {} >/dev/null && echo {}' 2>/dev/null
 
 # quick proxy server listening on port 9999 and forwarding all requests to sectools.org
 mkfifo response_pipe && nc -l 9999  0<response_pipe | nc sectools.org 80 1>response_pipe

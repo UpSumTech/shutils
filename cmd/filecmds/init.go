@@ -37,6 +37,9 @@ find . -type f -exec sed -i 's/oldstring/new string/g' {} \;
 # find files with certain permission settings
 find . -type f -perm 600 | ifne echo "executable files found"
 
+# Find how many files there are in each directory
+find . -type d -not -path './.git*' | parallel 'echo -n {}" "; ls {} | wc -l'
+
 # Find the actual number of cores on the machine. Single core might have a core id of 0.
 cat /proc/cpuinfo | grep 'core id'
 
