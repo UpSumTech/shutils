@@ -94,6 +94,10 @@ slay -clean user # Kills all remaining processes from the above step
 
 cat /etc/services | grep -i tmux # To see the port and protocol that tmux is using
 
+# To run a bunch of commands in parallel in bash GNU parallel is a helpful utility
+# This example is useful to compress a large csv file into a more managable size
+cat largefile.csv | parallel --pipe -k bzip2 --best > largefile.bz2
+
 # For debugging system and library calls in programs
 strace ls -i foo # Trace the system calls for the command
 ltrace ls -i foo # Trace the library calls for the command
