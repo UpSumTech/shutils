@@ -47,6 +47,9 @@ cat /proc/cpuinfo | grep 'core id'
 parallel -j3 -- "find /home/developer/.ssh -type f -perm 600" "find /root/.ssh -type f -perm 600" "find /home/ubuntu/.ssh -type f -perm 600"
 egrep '(cal|date)' utils.sh # Find the strings in the file
 
+# find lines in file1 that are not present in file2
+grep -v -f file2 file1
+
 # Fill some line numbers into a file
 for i in {1..10}; do echo $i >> foo; done
 # Use pee to pipe stdin to multiple files
