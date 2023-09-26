@@ -73,6 +73,9 @@ select pg_current_wal_lsn();
 # lsn is generally like this current > last confirmed flush > last restart checkpoint
 select slot_name, restart_lsn, confirmed_flush_lsn from pg_replication_slots;
 
+# get replication slot lag in a human readable form
+select slot_name, pg_size_pretty(pg_wal_lsn_diff(pg_current_wal_lsn(),restart_lsn)) as replicationSlotLag, active from pg_replication_slots ;
+
 # drop a db replication slot if necessary
 select pg_drop_replication_slot('<slotname>');
 
