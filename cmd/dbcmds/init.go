@@ -44,6 +44,9 @@ show shared_preload_libraries;
 # To show RDS plugins
 SHOW rds.extensions;
 
+# To see all extensions in the postgres instance
+SELECT e.extname AS "Name", e.extversion AS "Version", n.nspname AS "Schema", c.description AS "Description" FROM pg_catalog.pg_extension e LEFT JOIN pg_catalog.pg_namespace n ON n.oid = e.extnamespace LEFT JOIN pg_catalog.pg_description c ON c.objoid = e.oid AND c.classoid = 'pg_catalog.pg_extension'::pg_catalog.regclass;
+
 # To show shared libraries
 SHOW shared_preload_libraries;
 
@@ -82,6 +85,44 @@ select pg_drop_replication_slot('<slotname>');
 # To show current activity in a postgres database
 select * from pg_stat_activity;
 select * from pg_stat_activity where usename like '<username>%';
+
+# To show the size of temp files being used in a database
+select datname AS "database", temp_files, temp_bytes as temp_file_size from pg_stat_database;
+
+# To get the top queries from the database
+select substr(query, 0, 250), calls, to_char(total_time/(60*60), '999,999,9999,999') as "Cumulative Time (hrs)", rows, to_char(total_time/calls, '999.999') AS per_call_ms from pg_stat_statements order by total_time desc limit 10;
+# Shows the stats of tables that have the highest heap blk hit activities
+select * from pg_statio_all_tables order by heap_blks_hit desc limit 10;
+# Shows the stats of tables that have the highest index blk hit activities
+select * from pg_statio_all_indexes order by idx_blks_hit desc limit 10;
+# These are unused indexes in the database and possibly needs to be looked at
+select * from pg_stat_all_indexes where idx_scan = 0;
+
+# Query to display the use of temp tables that eat up local storage in a DB
+select
+n.nspname as schemaname
+,c.relname as relationname
+,case c.relkind
+when 'r' then 'table'
+when 'v' then 'view'
+when 'i' then 'index'
+when 's' then 'sequence'
+when 's' then 'special'
+end as relationtype
+,pg_catalog.pg_get_userbyid(c.relowner) as relationowner
+,pg_size_pretty(pg_relation_size(n.nspname ||'.'|| c.relname)) as relationsize
+from pg_catalog.pg_class c
+left join pg_catalog.pg_namespace n
+    on n.oid = c.relnamespace
+where  c.relkind in ('r','s')
+and  (n.nspname !~ '^pg_toast' and nspname like 'pg_temp%')
+order by pg_relation_size(n.nspname ||'.'|| c.relname) desc;
+
+select relname, 100 * idx_scan / (seq_scan + idx_scan) percent_of_times_index_used, n_live_tup rows_in_table from pg_stat_user_tables where (seq_scan + idx_scan) > 0 order by n_live_tup desc;
+
+# To show the cache hit ratio. If this number is in the high 90s we are in a good health with DB performance.
+select sum(blks_hit)*100/sum(blks_hit+blks_read) as hit_ratio from pg_stat_database;
+
 
 # To show how much IO happens on the different indexes in postgres
 select * from pg_statio_all_indexes where schemaname = 'public';
@@ -129,6 +170,8 @@ select column_name, column_default, is_nullable, data_type, character_maximum_le
 # In mysql get constraints for databases
 use information_schema;
 select * from table_constraints where table_name = "<table_name>" and table_schema = "<db_name>";
+# Get all the constraints for a table including things like foreign key constraints
+select pg_get_constraintdef(oid) as constraint_def, conrelid from pg_constraint where conrelid = 'public.<tablename>'::regclass;
 
 # In mysql get stats for table
 use information_schema;
