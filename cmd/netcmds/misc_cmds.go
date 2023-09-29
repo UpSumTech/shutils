@@ -55,6 +55,9 @@ ping google.ca # Check if request is even going out
 traceroute google.ca # Trace using icmp
 tcptraceroute google.ca # Trace using tcp instead of icmp
 
+# Use mtr to trace the route to a host
+mtr -w google.ca
+
 ifconfig -a # Display all interfaces
 ifconfig en0 # Display selected interface
 
