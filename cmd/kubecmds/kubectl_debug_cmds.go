@@ -56,6 +56,9 @@ kubectl get pod nginx-pod-1 --as=dev@example.com --as-group=FrontEnd
 # To find out which k8s services are using external load balancers
 kubectl get services -o custom-columns=:.metadata.name --no-headers | grep -v kubernetes | xargs -n 1 -I % /bin/bash -c "echo -n %; echo -n ' '; kubectl get service % -o jsonpath='{ ..hostname }'; echo" | tee | column -t -s ' '
 
+# Attach a debug container to a running pod to inspect processes/network information etc.
+kubectl debug -it --image=ubuntu <pod-name> -- /bin/bash
+
 # Some useful helm commands
 helm plugin install <git_repo_url>
 helm plugin list
