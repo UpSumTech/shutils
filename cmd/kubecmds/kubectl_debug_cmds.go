@@ -33,13 +33,13 @@ kubectl set env deployment/webapp --list
 kubectl get componentstatus
 
 # Drain pods from a node that is unhealthy
-kubectl drain node.example.com --ignore-daemonsets --delete-local-data
+kubectl drain node.example.com --ignore-daemonsets --delete-emptydir-data
 
 # Quick sample deployment to test scheduling on a node
 kubectl run hello-world --replicas=1 --image=gcr.io/google-samples/node-hello:1.0  --port=8080 --overrides='{ "apiVersion": "apps/v1beta1", "spec": { "template": { "spec": { "nodeSelector": { "kubernetes.io/hostname": "nodename.example.com" } } } } }'
 
 # Quickly drain node on kube cluster
-kubectl drain <NODE_NAME> --ignore-daemonsets --delete-local-data
+kubectl drain <NODE_NAME> --ignore-daemonsets --delete-emptydir-data
 
 # To wipe out config for a cluster and start afresh
 # Especially required if certs or auth has changed for the k8s cluster
