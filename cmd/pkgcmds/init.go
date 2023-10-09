@@ -38,6 +38,19 @@ lsb_release -a # List distro info
 lsmod # Lsit all the kernel modules
 dpkg -l # List all packages in debian systems
 apt list --installed | grep ssl # List installed packages in ubuntu
+
+# The commands below can help manage/update gpg keys used to verify package signatures in a debian system
+# Get the list of gpg keys which are trusted and managed by the system from here
+ls -lah /usr/share/keyrings
+# If you want to add a new gpg key for package verification, then this is the command
+curl -fsSL <gpg-key-url> | sudo gpg -o /usr/share/keyrings/<key-name>.gpg --dearmor
+# The gpg key file should match the filename which is used to verify the signature of the package installed
+cat /etc/apt/sources.list.d/<repo>
+sudo apt-get update
+
+# List the trusted keys in the keyring. But this command could be deprecated soon.
+sudo apt-key list
+
 lscpu # List cpu info
 lspci -mm # List all PCI buses in the system in machine readable format
 
